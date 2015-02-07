@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta content="author=Lei Kinsueng;organization=xuans;department=xuans network lab.yips;"/>
+    <meta content="baseon=望晴2_UI;version=6.7.0.1;"/>
+    <meta content="create-datetime=2015/2/3 Tue 22:45"/>
+    <meta content="copyright=祥琳健尚|Xuans 2015"/>
+    <meta content="code-name=雯晴|minQ;"/>
+    <meta content="slogon=创造力 创造 创造性;"/>
+    <meta content="minimal-ui" name="viewport">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="no" name="apple-mobile-web-app-capable" />
+    <link rel="Shortcut Icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link href="common/style.css" rel="stylesheet" />
+    <title>解忧集 | 祥琳健尚-望晴-望晴2_UI-雯晴|minQ</title>
+</head>
+<body>
+    <header data-role="header">
+        <ul class="header-titles no-select">
+            <li class="title"><a href="/">祥琳健尚</a></li>
+            <li class="title"><a href="/yips/yips.asp">望晴</a></li>
+            <li class="title"><a href="./">雯晴minQ</a></li>
+            <li id="mainTitle" class="title main-title">解忧集</li>
+        </ul>
+    </header>
+    <div data-role="content">
+        <aside class="aside">
+            <ol class="aside-menu">
+                <li>
+                    <button class="title btn-add">+&nbsp;添加</button>
+                </li>
+                <li>
+                    <dl class="writer-info">
+                        <dt>第一位来信者</dt>
+                        <dd title="苏苏，女，中国，河北，石家庄">苏苏，女，中国，河北，石家庄</dd>
+                        <dd>感情问题，与不喜欢的人在一起</dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl class="writer-info">
+                        <dt>第二位来信者</dt>
+                        <dd>苏苏，女，中国，河北，石家庄</dd>
+                        <dd>感情问题，与不喜欢的人在一起</dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl class="writer-info">
+                        <dt>第一位来信者</dt>
+                        <dd>苏苏，女，中国，河北，石家庄</dd>
+                        <dd>感情问题，与不喜欢的人在一起</dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl class="writer-info">
+                        <dt>第二位来信者</dt>
+                        <dd>苏苏，女，中国，河北，石家庄</dd>
+                        <dd>感情问题，与不喜欢的人在一起</dd>
+                    </dl>
+                </li>
+            </ol>
+        </aside>
+        <article>
+
+        </article>
+    </div>
+    <footer data-role="footer">
+        <ul class="footer-list">
+            <li>祥琳健尚&copy;</li>
+            <li>望晴</li>
+            <li>2015</li>
+            <li>雯晴minQ</li>
+            <li>ナミヤ雑貨店</li>
+        </ul>
+        <p class="watermark no-select">
+            ナミヤ雑貨店
+        </p>
+    </footer>
+    <script src="common/jquery-1.11.2.js"></script>
+    <script>
+        $(function () {
+            /*设置header背景色*/
+            var hsl, hslp,titleWidths=new Array(),isMainTitleHidden;
+            //  hsl = $.queryString('hsl') || document.location.replace('?hsl='+ parseInt(Math.random() * 360, 0));
+            hsl = parseInt(Math.random() * 360, 0);
+            hslp = 30;
+            $('.header-titles li:not(:last)').each(function () {
+                $(this).css('background-color', 'hsl(' + hsl + ',50%,' + (hslp += 10) + '%)');
+            });
+            $('header').css('background-color', 'hsl(' + hsl + ',50%,' + (hslp += 10) + '%)').fadeIn();
+            $('aside').css('background-color', 'hsl(' + hsl + ',50%,' + (hslp) + '%)').fadeIn();
+            /*设置header动画*/
+            $('.header-titles').click(function (e) {
+                if (!isMainTitleHidden) {
+                    isMainTitleHidden = true;
+                    var $src = $(e.target || event.srcElement);
+                    if ($src.hasClass('header-titles') || $src.hasClass('main-title')) {
+                        var elems = $('.header-titles li:not(:last)');
+                        for (var i = 0, $elem, elemWidth; !!($elem = $(elems[i])).length; i++) {
+                            elemWidth = $elem.width();
+                            console.log(titleWidths[i],elemWidth);
+                            $elem.animate({
+                                'width': parseInt(elemWidth) > 0 ? (!titleWidths[i] ? titleWidths[i] = elemWidth : 0) && 0 : titleWidths[i]
+                            });
+                        }
+                    }
+                    isMainTitleHidden = false;
+                }
+            }).trigger('click');
+            var windowWidth,resizeTimer;
+            $(window).resize(function () {
+                if ($(this).width() === windowWidth) {
+                    titleWidths.splice(0, titleWidths.length);
+                    $('.header-titles li:not(:last)').css('width', 'auto');
+                    $('.header-titles').trigger('click');
+                } else {
+                    clearTimeout(resizeTimer);
+                    windowWidth = $(this).width();
+                    resizeTimer=setTimeout(function () {
+                        $(this).trigger('resize');
+                    }, 100);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
