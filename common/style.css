@@ -1,13 +1,14 @@
 ﻿/*common*/
+html {
+    font-size:16px;
+}
 body {
     max-width: 1366px;
     padding: 0;
     margin: 0 auto;
     border: none;
     outline: 0;
-    font-size: 16px;
-    font-size:100%;
-    font-family: "微软雅黑","Microsoft YaHei","Segoe UI","DroidSansFallback","华文细黑",Arial;
+    font-family: "微软雅黑","Microsoft YaHei","Segoe UI","DroidSansFallback","华文细黑",HelveticaNeue-Medium,Arial;
     cursor: default;
     zoom: 1;
     -webkit-tap-highlight-color: transparent; /*iPhone去除点击时的阴影*/
@@ -27,7 +28,7 @@ a {
     }
 
 .title, dt {
-    font-family: "Microsoft YaHei Light","微软雅黑 Light","黑体","Segoe WP SemiLight","DroidSansFallback","华文细黑";
+    font-family: "Microsoft YaHei Light","微软雅黑 Light","黑体","Segoe WP SemiLight","DroidSansFallback","华文细黑",HelveticaNeue-Thin;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -82,7 +83,6 @@ header {
     margin:0;
     padding:.5em 1.5em;
     list-style:none;
-    font-size:1rem;
 }
     .aside-menu > li {
         padding: 1em 0;
@@ -111,19 +111,23 @@ header {
 .writer-info {
     margin: 0;
     padding: 0;
+    font-size: 1rem;
 }
     .writer-info > dt {
-        font-size:1.1rem;
+        font-size:1.15em;
     }
     .writer-info > dd {
         margin: 0;
         line-height: 1.5em;
-        font-size: .8rem;
+        font-size: .85em;
         text-indent: 2em;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
+.info-name {
+    display: none;
+}
 /*content end*/
 
 /*footer*/
@@ -133,6 +137,7 @@ footer {
     margin:1em 0;
     font-size:1rem;
     text-align:left;
+    background-color:transparent;
 }
 .footer-list {
     margin:0;
@@ -157,15 +162,30 @@ footer {
 }
 /*default screen min-width=320px*/
 
-/*screen min-width=640px for pads*/
-@media screen and (min-width:600px) {
+/*screen min-width=480px for brandth phones*/
+@media screen and (min-width:480px) {
     /*common*/
-    body {
-        font-size: 14px;
+    html,body {
+        font-size: 13px;
     }
     /*header*/
-
-   /*footer*/
+    /*.header-titles > li {    */
+    /*    font-size: 1.4rem;   */
+    /*}                        */
+    .header-titles > .main-title {
+        font-size:2.5rem;
+    }
+    /*content*/
+    .btn-add {
+        font-size:1.05rem;
+    }
+    .writer-info {
+        font-size:.9rem;
+    }
+    .info-name {
+        display:inline;
+    }
+    /*footer*/
     footer {
         padding-top: 1em;
     }
@@ -180,21 +200,56 @@ footer {
         bottom:.5em;
     }
 }
-@media screen and (min-width:960px) {
+/*screen min-width=640px for pads*/
+@media screen and (min-width:640px) {
     /*common*/
-    body {
+    html,body {
+        font-size: 18px;
+    }
+}
+/*screen min-width=800px for PCs*/
+@media screen and (min-width:800px) {
+    /*common*/
+    html {
         font-size: 16px;
     }
     /*header*/
+    header {
+        border-bottom:none;
+    }
     .header-titles > li {
         display: inline-block;
+        padding-top:.4em;
         font-size: 1.6rem;
         vertical-align: middle;
     }
     .header-titles > .main-title {
         font-size:1.4rem;
     }
+    /*content*/
+    .aside {
+        display:inline-block;
+        height:100%;
+        max-width:250px;
+        max-height:100%;
+        overflow:auto;
+    }
+    .aside-menu {
+        padding:.5em;
+    }
+    .btn-add,
+    .writer-info {
+        font-size: 1rem;
+    }
+   /* .info-name {           */
+   /*     display: inline;   */
+   /* }                      */
     /*footer*/
+    footer {
+        margin:0;
+        padding-top:0;
+        border-top:none;
+    }
     .watermark {
         bottom:.4em;
     }

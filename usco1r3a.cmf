@@ -19,7 +19,7 @@
     <script>
     </script>
 </head>
-<body style="opacity:0">
+<body>
     <header data-role="header">
         <ul class="header-titles no-select">
             <li class="title"><a href="/">祥琳健尚</a></li>
@@ -59,15 +59,7 @@
             </ol>
         </aside>
         <article>
-            <div id="defaultPage">
 
-            </div>
-            <div id="addPage">
-
-            </div>
-            <div id="dialogPage">
-
-            </div>
         </article>
     </div>
     <footer data-role="footer">
@@ -87,7 +79,6 @@
         var pcScreenMinWidth = 800;
         $(function () {
             /*设置header背景色 Start*/
-            //$('body').hide();
             var hsl, hslp,titleWidths=new Array(),isMainTitleHidden;
               hsl = $.queryString('hsl') || document.location.replace('?hsl='+ parseInt(Math.random() * 360, 0));
            // hsl = parseInt(Math.random() * 360, 0);
@@ -96,11 +87,7 @@
                 $(this).css('background-color', 'hsl(' + hsl + ',50%,' + (hslp += 10) + '%)');
             });
             $('header').css('background-color', 'hsl(' + hsl + ',50%,' + (hslp += 10) + '%)').fadeIn();
-            $('aside').css('background-color', 'hsl(' + hsl + ',50%,' + (hslp += 10) + '%)').fadeIn();
-            $('body').css({
-                'background-color': 'hsl(' + hsl + ',50%,' + (hslp += 10) + '%)',
-                'opacity':1,
-            }).fadeIn();
+            $('aside').css('background-color', 'hsl(' + hsl + ',50%,' + (hslp+=10) + '%)').fadeIn()；
             /*设置header背景色 End*/
             /*设置header动画 Start*/
             $('.header-titles').click(function (e) {
@@ -154,11 +141,6 @@
                 $('#content').css({
                     'height': contentHeight,
                     'max-height': contentHeight,
-                });
-                var contentWidth=$('#content').innerHeight()-$('aside').outerWidth();
-                $('article').css({
-                    'width': contentWidth,
-                    'max-width': contentWidth,
                 });
             } else {
                 $('#content').css({
