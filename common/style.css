@@ -42,6 +42,10 @@ a {
     -webkit-tap-highlight-color:transparent;/*iPhone去除点击时的阴影*/
     -webkit-appearance:none;/*input,textarea预设外观*/
 }
+.mCustomScrollbar {
+    touch-action: auto;
+    -ms-touch-action: auto;
+}
 /*header*/
 header {
     background:#3EC1FF;
@@ -66,6 +70,10 @@ header {
         outline: 0;
         text-overflow:clip;
     }
+    .header-titles > .func-btns {
+        display: block;
+        float: right;
+    }
     .header-titles > .main-title {
         display: inline-block;
         font-size: 1.8rem;
@@ -84,6 +92,7 @@ header {
     margin:0;
     padding:.5em 1.5em;
     list-style:none;
+    font-size:1rem;
 }
     .aside-menu > li {
         padding: 1em 0;
@@ -93,17 +102,18 @@ header {
         }
 .btn-add {
     display: block;
-    padding: .25em 0;
-    width: 100%;
+    height: 1.5em;
+    width: 1.6em;
     background-color: transparent;
-    border: 0.2em dashed #FFF;
+    border: 0.1em dashed #FFF;
     border-radius: .2em;
     outline: 0;
-    line-height: 1.5em;
-    font-size: 1rem;
+    font-size: 1.5rem;
+    font-weight: 900;
+    line-height: 1em;
     color: #FFF;
-    opacity:.6;
-    cursor:pointer;
+    cursor: pointer;
+    opacity: .6;
 }
     .btn-add:hover,
     .btn-add:active {
@@ -181,7 +191,13 @@ footer {
     }
     /*content*/
     .btn-add {
-        font-size:1.05rem;
+        height:auto;
+        width:auto;
+        padding:.25em .4em;
+        margin-top:.18em;
+        border-width:.12em;
+        border-radius:10%;
+        font-weight:400;
     }
     .writer-info {
         font-size:.9rem;
@@ -210,6 +226,10 @@ footer {
     html,body {
         font-size: 18px;
     }
+    .btn-add {
+        font-size:1.2rem;
+        margin-top:.6em;
+    }
 }
 /*screen min-width=800px for PCs*/
 @media screen and (min-width:800px) {
@@ -235,7 +255,14 @@ footer {
     .header-titles > .main-title {
         font-size:1.4rem;
     }
+    .btn-add {
+        font-size:1rem;
+        margin-top:.1em;
+    }
     /*content*/
+    #content {
+        font-size:0;
+    }
     .aside {
         display:inline-block;
         height:100%;
@@ -247,7 +274,6 @@ footer {
     .aside-menu {
         padding:.5em;
     }
-    .btn-add,
     .writer-info {
         font-size: 1rem;
     }
