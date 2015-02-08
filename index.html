@@ -15,6 +15,7 @@
     <link rel="Shortcut Icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link href="common/style.css" rel="stylesheet" />
+    <link href="common/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
         <title>解忧集 | 祥琳健尚-望晴-望晴2_UI-雯晴|minQ</title>
     <script>
     </script>
@@ -34,36 +35,62 @@
                 <li>
                     <button class="title btn-add no-select">+&nbsp;添加</button>
                 </li>
-                <li>
-                    <dl class="writer-info">
-                        <dt>第一位来信者</dt>
-                        <dd title="苏苏，女，中国，河北，石家庄"><span class="info-name">基本信息：</span>苏苏，女，中国，河北，石家庄</dd>
-                        <dd title="感情问题，与不喜欢的人在一起"><span class="info-name">主题：</span>感情问题，与不喜欢的人在一起</dd>
-                    </dl>
-                </li>
-                <li>
-                    <dl class="writer-info">
-                        <dt>第一位来信者</dt>
-                        <dd title="苏苏，女，中国，河北，石家庄"><span class="info-name">基本信息：</span>苏苏，女，中国，河北，石家庄</dd>
-                        <dd title="感情问题，与不喜欢的人在一起"><span class="info-name">主题：</span>感情问题，与不喜欢的人在一起</dd>
-                    </dl>
-                </li>
-                <li>
-                    <dl class="writer-info">
-                        <dt>第一位来信者</dt>
-                        <dd title="苏苏，女，中国，河北，石家庄"><span class="info-name">基本信息：</span>苏苏，女，中国，河北，石家庄</dd>
-                        <dd title="感情问题，与不喜欢的人在一起"><span class="info-name">主题：</span>感情问题，与不喜欢的人在一起</dd>
-                    </dl>
-                </li>
-
             </ol>
+            <div id="asideMenuContainer">
+                <ol class="aside-menu">
+                    <li>
+                        <dl class="writer-info">
+                            <dt>第一位来信者</dt>
+                            <dd title="苏苏，女，中国，河北，石家庄"><span class="info-name">基本信息：</span>苏苏，女，中国，河北，石家庄</dd>
+                            <dd title="感情问题，与不喜欢的人在一起"><span class="info-name">主题：</span>感情问题，与不喜欢的人在一起</dd>
+                        </dl>
+                    </li>
+                    <li>
+                        <dl class="writer-info">
+                            <dt>第一位来信者</dt>
+                            <dd title="苏苏，女，中国，河北，石家庄"><span class="info-name">基本信息：</span>苏苏，女，中国，河北，石家庄</dd>
+                            <dd title="感情问题，与不喜欢的人在一起"><span class="info-name">主题：</span>感情问题，与不喜欢的人在一起</dd>
+                        </dl>
+                    </li>
+                    <li>
+                        <dl class="writer-info">
+                            <dt>第一位来信者</dt>
+                            <dd title="苏苏，女，中国，河北，石家庄"><span class="info-name">基本信息：</span>苏苏，女，中国，河北，石家庄</dd>
+                            <dd title="感情问题，与不喜欢的人在一起"><span class="info-name">主题：</span>感情问题，与不喜欢的人在一起</dd>
+                        </dl>
+                    </li>
+                    <li>
+                        <dl class="writer-info">
+                            <dt>第一位来信者</dt>
+                            <dd title="苏苏，女，中国，河北，石家庄"><span class="info-name">基本信息：</span>苏苏，女，中国，河北，石家庄</dd>
+                            <dd title="感情问题，与不喜欢的人在一起"><span class="info-name">主题：</span>感情问题，与不喜欢的人在一起</dd>
+                        </dl>
+                    </li>
+                    <li>
+                        <dl class="writer-info">
+                            <dt>第一位来信者</dt>
+                            <dd title="苏苏，女，中国，河北，石家庄"><span class="info-name">基本信息：</span>苏苏，女，中国，河北，石家庄</dd>
+                            <dd title="感情问题，与不喜欢的人在一起"><span class="info-name">主题：</span>感情问题，与不喜欢的人在一起</dd>
+                        </dl>
+                    </li>
+                    <li>
+                        <dl class="writer-info">
+                            <dt>第一位来信者</dt>
+                            <dd title="苏苏，女，中国，河北，石家庄"><span class="info-name">基本信息：</span>苏苏，女，中国，河北，石家庄</dd>
+                            <dd title="感情问题，与不喜欢的人在一起"><span class="info-name">主题：</span>感情问题，与不喜欢的人在一起</dd>
+                        </dl>
+                    </li>
+                </ol>
+            </div>
         </aside>
         <article>
             <div id="defaultPage">
-
+                <div class="default-page-title no-select title">解<br/>忧<br />集</div>
+                <p class="default-page-sub-title no-select">祥琳健尚 希璇文学库</p>
+                <p class="default-page-sub-title no-select">二〇一四甲午年 八月</p>
             </div>
             <div id="addPage">
-
+                
             </div>
             <div id="dialogPage">
 
@@ -83,14 +110,23 @@
         </p>
     </footer>
     <script src="common/jquery-1.11.2.js"></script>
+    <script src="common/jquery.mCustomScrollbar.concat.min.js"></script>
     <script>
         var pcScreenMinWidth = 800;
         $(function () {
+            /*修复inline-block空隙 Start*/
+            $('.header-titles').contents().filter(function () {
+                return this.nodeType === 3;
+            }).remove();
+            $('#content').contents().filter(function () {
+                return this.nodeType === 3;
+            }).remove();
+            /*修复inline-block空隙 End*/
             /*设置header背景色 Start*/
             //$('body').hide();
             var hsl, hslp,titleWidths=new Array(),isMainTitleHidden;
-              hsl = $.queryString('hsl') || document.location.replace('?hsl='+ parseInt(Math.random() * 360, 0));
-           // hsl = parseInt(Math.random() * 360, 0);
+             hsl = $.queryString('hsl') || document.location.replace('?hsl='+ parseInt(Math.random() * 361, 0)+'&bgi=' + parseInt(Math.random() * imagesCounts + 1, 0));
+            //hsl = parseInt(Math.random() * 360, 0);
             hslp = 30;
             $('.header-titles li:not(:last)').each(function () {
                 $(this).css('background-color', 'hsl(' + hsl + ',50%,' + (hslp += 10) + '%)');
@@ -122,18 +158,20 @@
             var windowWidth,resizeTimer,currentWindowWidth,isWindowWidthChange;
             $(window).resize(function () {
                 currentWindowWidth = $(this).width();
-                if (currentWindowWidth === windowWidth && isWindowWidthChange) {
-                    titleWidths.splice(0, titleWidths.length);
-                    $('.header-titles li:not(:last)').css('width', 'auto');
-                    $('.header-titles').trigger('click');
-                    isWindowWidthChange = false;
-                } else if(!windowWidth||Math.abs(currentWindowWidth-windowWidth)>100) {
-                    clearTimeout(resizeTimer);
-                    windowWidth = currentWindowWidth;
-                    resizeTimer=setTimeout(function () {
-                        $(this).trigger('resize');
-                        isWindowWidthChange = true;
-                    }, 100);
+                if (currentWindowWidth >= pcScreenMinWidth) {
+                    if (currentWindowWidth === windowWidth && isWindowWidthChange) {
+                        titleWidths.splice(0, titleWidths.length);
+                        $('.header-titles li:not(:last)').css('width', 'auto');
+                        $('.header-titles').trigger('click');
+                        isWindowWidthChange = false;
+                    } else if (!windowWidth || Math.abs(currentWindowWidth - windowWidth) > 100) {
+                        clearTimeout(resizeTimer);
+                        windowWidth = currentWindowWidth;
+                        resizeTimer = setTimeout(function () {
+                            $(this).trigger('resize');
+                            isWindowWidthChange = true;
+                        }, 100);
+                    }
                 }
             });
             /*设置header动画 End*/
@@ -145,26 +183,45 @@
             $(window).resize(resizeContentSize);
             resizeContentSize();
         });
+        
+        var imagesCounts = 190, backgroundImage;
+        backgroundImage = 'url(' + document.location.pathname + 'images/%20%28' + ($.queryString('bgi') || parseInt(Math.random() * imagesCounts + 1, 0)) + '%29.jpg)';
+       // console.log(backgroundImage);
         function resizeContentSize() {
             //console.log('header', $('header').outerHeight(), $('header').innerHeight(), $('header').height());
             //console.log('footer', $('footer').outerHeight(), $('footer').innerHeight(), $('footer').height());
             //console.log('window', $(window).outerHeight(), $(window).innerHeight(), $(window).height());
+            /*滚动条*/
+            $('#asideMenuContainer').mCustomScrollbar();
+            $('article').mCustomScrollbar();
             if ($(window).width() > pcScreenMinWidth) {
                 var contentHeight = $(window).innerHeight() - $('header').outerHeight() - $('footer').outerHeight();
                 $('#content').css({
                     'height': contentHeight,
                     'max-height': contentHeight,
                 });
-                var contentWidth=$('#content').innerHeight()-$('aside').outerWidth();
+                var contentWidth = $('#content').innerWidth() - $('aside').outerWidth();
                 $('article').css({
                     'width': contentWidth,
                     'max-width': contentWidth,
                 });
+                if ($('body').css('background-image') === 'none' || !$('body').css('background-image')) {
+                    //  console.log(backgroundImage);
+                    $('body').css('background-image', backgroundImage);
+                    // for (var p in document.location) {
+                    //     console.log(p, document.location[p]);
+                    // }
+                }
             } else {
                 $('#content').css({
                     'height': 'auto',
-                    'max-height': 'auto',
+                    'max-height': '100%',
                 });
+                $('article').css({
+                    'width': 'auto',
+                    'max-width': '100%',
+                });
+                $('body').css('background-image', 'none');
             }
         }
     </script>
