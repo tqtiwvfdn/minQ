@@ -3,7 +3,6 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="Cache-Control" content="no-cache" />
-    <meta name="msapplication-tap-highlight" content="no" />
     <meta content="author=Lei Kinsueng;organization=xuans;department=xuans network lab.yips;" />
     <meta content="baseon=望晴2_UI;version=6.7.0.1;" />
     <meta content="create-datetime=2015/2/3 Tue 22:45" />
@@ -15,25 +14,11 @@
     <meta content="no" name="apple-mobile-web-app-capable" />
     <link rel="Shortcut Icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <script>
-        //console.log(window.screen.logicalXDPI);
-        //console.log(window.screen.logicalYDPI);
-        //
-        //console.log(window.screen.availHeight+','+window.screen.availWidth);
-        //判断屏幕大小
-        var pcScreenMinWidth = 800, isPcScreen = false;
-        if (window.screen.availWidth >= pcScreenMinWidth) {
-            document.write('<link href=\"common\/jquery.mCustomScrollbar.min.css\" rel=\"stylesheet\" \/>');
-            isPcScreen = true;
-        }
-    </script>
+    <link href="common/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
     <link href="common/style.css" rel="stylesheet" />
     <title>解忧集 | 祥琳健尚-望晴-望晴2_UI-雯晴|minQ</title>
 </head>
 <body style="opacity:0">
-    <div class="bg-div">
-        <img class="bg-img"/>
-    </div>
     <header data-role="header">
         <ul class="header-titles no-select">
             <li class="title"><a href="/">祥琳健尚</a></li>
@@ -204,11 +189,11 @@
                 </li>
             </ol>
         </aside>
-        <article class="article">
+        <article>
             <div id="defaultPage">
-                <div class="default-page-title no-select title">解<br/>忧<br/>集</div>
-                <p class="default-page-sub-title no-select">祥琳健尚&nbsp;希璇文学库</p>
-                <p class="default-page-sub-title no-select">二〇一四甲午年&nbsp;八月</p>
+                <div class="default-page-title no-select title">解<br/>忧<br />集</div>
+                <p class="default-page-sub-title no-select">祥琳健尚 希璇文学库</p>
+                <p class="default-page-sub-title no-select">二〇一四甲午年 八月</p>
             </div>
             <div id="addPage">
                 
@@ -232,30 +217,21 @@
     </footer>
     <script src="common/jquery-1.11.2.js"></script>
     <script type='text/javascript'>
-        var titleWidths = new Array();
-        var scrollbarElems = ['.aside', '.article'],
-            scrollbarStyle = {
-                axis: "y",
-                scrollButtons: { enable: false },
-                theme: "rounded",
-            };
-        if (window.navigator.msPointerEnabled) {
-            scrollbarStyle.theme = 'light-2';
-        }
+        //判断屏幕大小
+        var pcScreenMinWidth = 780, isPcScreen = false, titleWidths = new Array();
         var imagesCounts = 190, backgroundImage, bgImage = new Image();
-        if (isPcScreen) {
+        var scrollbarElems = ['aside', 'article'];
+        backgroundImage = document.location.pathname + 'images/%20%28' + ($.queryString('bgi') || parseInt(Math.random() * imagesCounts + 1, 0)) + '%29.jpg';
+        if (window.screen.availHeight > pcScreenMinWidth || window.screen.availWidth > pcScreenMinWidth) {
             //预加载图片
-            backgroundImage = document.location.pathname + 'images/%20%28' + ($.queryString('bgi') || parseInt(Math.random() * imagesCounts + 1, 0)) + '%29.jpg';
             bgImage.src = backgroundImage;
-            bgImage.onload = function () {
-                backgroundImage = 'url(\'' + backgroundImage + '\')';
-                $('bg-img').css('background-image', backgroundImage);
-            };
             //PC屏幕大小下加载滚动条插件
             document.write('<script src=\"common\/jquery.mCustomScrollbar.concat.min.js\"><\/script>');
+            isPcScreen = true;
         }
-
-        //onLoad & Listener
+        backgroundImage = 'url(\'' + backgroundImage + '\')';
+    </script>
+    <script>
         $(function () {
             var hsl, hslp, isMainTitleHidden;
             /*修复inline-block空隙 Start*/
@@ -268,88 +244,57 @@
             /*修复inline-block空隙 End*/
             /*设置header背景色 Start*/
             //$('body').hide();
-            hsl = $.queryString('hsl') || document.location.replace('?hsl=' + parseInt(Math.random() * 361, 0) + '&bgi=' + parseInt(Math.random() * imagesCounts + 1, 0));
+             hsl = $.queryString('hsl') || document.location.replace('?hsl='+ parseInt(Math.random() * 361, 0)+'&bgi=' + parseInt(Math.random() * imagesCounts + 1, 0));
             //hsl = parseInt(Math.random() * 360, 0);
             hslp = 30;
             $('.header-titles li.title:not(:last)').each(function () {
                 $(this).css('background-color', 'hsl(' + hsl + ',50%,' + (hslp += 10) + '%)');
             });
             $('header').css('background-color', 'hsl(' + hsl + ',50%,' + (hslp += 10) + '%)').fadeIn();
-            $('aside').css('background-color', 'hsl(' + hsl + ',50%,' + (hslp += 10) + '%)');
+            $('aside').css('background-color', 'hsl(' + hsl + ',50%,' + (hslp += 10) + '%)').fadeIn();
             $('body').css({
                 'background-color': 'hsl(' + hsl + ',50%,' + (hslp += 10) + '%)',
-                'opacity': 1,
+                'opacity':1,
             }).fadeIn();
             /*设置header背景色 End*/
             /*设置header动画 Start*/
             $('.header-titles').click(function (e) {
-                var $src = $(e.target || event.srcElement);
-                if (!isMainTitleHidden && $(window).width() >= pcScreenMinWidth) {
+                if (!isMainTitleHidden) {
                     isMainTitleHidden = true;
+                    var $src = $(e.target || event.srcElement);
                     if ($src.hasClass('header-titles') || $src.hasClass('main-title')) {
-                        //title
-                        for (var i = 0, elemWidth,
-                            elems = $('.header-titles li.title:not(:last)'),
-                           $elem; !!($elem = $(elems[i])).length; i++) {
+                        var elems = $('.header-titles li.title:not(:last)');
+                        for (var i = 0, $elem, elemWidth; !!($elem = $(elems[i])).length; i++) {
                             elemWidth = $elem.width();
                             $elem.animate({
                                 'width': parseInt(elemWidth) > 0 ? (!titleWidths[i] ? titleWidths[i] = elemWidth : 0) && 0 : titleWidths[i]
                             });
                         }
-                        //aside&article
-                        var $asideElem = $(scrollbarElems[0]),
-                            asideWidth = parseInt($asideElem.css('max-width'), 0) - parseInt($asideElem.css('width'), 0);
-                        $asideElem.animate({
-                            width: asideWidth,
-                        });
-                        $(scrollbarElems[1]).animate({
-                            'width': $('#content').innerWidth() - asideWidth,
-                            'max-width': $('#content').innerWidth() - asideWidth,
-                        });
                     }
                     isMainTitleHidden = false;
-                } else if ($(window).width() < pcScreenMinWidth) {
-                    if ($src.hasClass('header-titles') || $src.hasClass('main-title')) {
-                        for (var elem in scrollbarElems) {
-                            $(scrollbarElems[elem]).toggleClass('aside-show');
-                        }
-                    }
                 }
             });
-            /*设置header动画 End*/
-            /*设置屏幕宽度、高度 Start */
-            var windowWidth, resizeWidthTimer, resizeHeightTimer, currentWindowWidth;
+            var windowWidth, resizeWidthTimer,resizeHeightTimer, currentWindowWidth;
             $(window).resize(function () {
                 currentWindowWidth = $(this).width();
-                //处理屏幕宽度部分
+                //处理屏幕宽度部分          
                 if (currentWindowWidth >= pcScreenMinWidth) {
                     if (!windowWidth || Math.abs(currentWindowWidth - windowWidth) > 100) {
                         clearTimeout(resizeWidthTimer);
                         windowWidth = currentWindowWidth;
-                        resizeWidthTimer = setTimeout(resizeHeaderTitle, 500);
+                        resizeWidthTimer = setTimeout(function () {
+                            resizeHeaderTitle();
+                        }, 200);
                     }
                 }
                 //处理屏幕高度部分
                 clearTimeout(resizeHeightTimer);
-                resizeHeightTimer = setTimeout(resizeContentSize, 200, currentWindowWidth);
+                resizeHeightTimer = setTimeout(resizeContentSize, 200,currentWindowWidth);
             });
-            resizeContentSize($(window).width());
-            /*设置屏幕宽度、高度 End */
+            /*设置header动画 End*/
 
-            //IE下触屏滚动补丁
-            if (!!$('body').css('-ms-touch-action') && window.navigator.msPointerEnabled) {
-                for (var i = 0, elem; (elem = scrollbarElems[i]) != null; i++) {
-                    $(elem)[0].onmspointerenter = function (innerEvent) {
-                        if (innerEvent.which === 1 && $(this).hasClass('mCustomScrollbar')) {
-                            $(this).mCustomScrollbar('destroy');
-                            // console.log('destory');
-                        } else if (innerEvent.which === 0 && !$(this).hasClass('mCustomScrollbar')) {
-                            $(this).mCustomScrollbar(scrollbarStyle);
-                            // console.log('create');
-                        }
-                    }
-                }
-            }
+            resizeContentSize($(window).width());
+
         });
         //resize headerTitle size
         function resizeHeaderTitle() {
@@ -359,38 +304,48 @@
         }
         //resize #content size
         function resizeContentSize(windowWidth) {
-            if (isPcScreen) {
-                if (windowWidth > pcScreenMinWidth) {
-                    var contentHeight = $(window).innerHeight() - $('header').outerHeight() - $('footer').outerHeight();
-                    $('#content').css({
-                        'height': contentHeight,
-                        'max-height': contentHeight,
-                    });
-                    var contentWidth = $('#content').innerWidth() - $(scrollbarElems[0]).outerWidth();
-                    $(scrollbarElems[1]).css({
-                        'width': contentWidth,
-                        'max-width': contentWidth,
-                    });
+            if (windowWidth > pcScreenMinWidth) {
+                var contentHeight = $(window).innerHeight() - $('header').outerHeight() - $('footer').outerHeight();
+                $('#content').css({
+                    'height': contentHeight,
+                    'max-height': contentHeight,
+                });
+                var contentWidth = $('#content').innerWidth() - $('aside').outerWidth();
+                $('article').css({
+                    'width': contentWidth,
+                    'max-width': contentWidth,
+                });
+                if ($('body').css('background-image') === 'none' || !$('body').css('background-image')) {
+                    $('body').css('background-image', backgroundImage);
+                }
+                if (isPcScreen) {
                     for (var elems in scrollbarElems) {
-                        $(scrollbarElems[elems]).mCustomScrollbar(scrollbarStyle);
+                        $(scrollbarElems[elems]).mCustomScrollbar({
+                            axis: "y",
+                            scrollButtons: { enable: true },
+                            theme: "rounded-dots",
+                        });
                         $(scrollbarElems[elems]).mCustomScrollbar("update");
                     }
-                } else {
-                    //恢复
-                    $('#content').css({
-                        'height': 'auto',
-                        'max-height': '100%',
-                    });
+                }
+            } else {
+                //恢复
+                $('#content').css({
+                    'height': 'auto',
+                    'max-height': '100%',
+                });
+                $('article').css({
+                    'width': 'auto',
+                    'max-width': '100%',
+                });
+                $('body').css('background-image', 'none');
+                if (isPcScreen) {
                     for (var elems in scrollbarElems) {
-                        $(scrollbarElems[elems]).css({
-                            'width': 'auto',
-                            'max-width': 'auto',
-                        }).mCustomScrollbar("destroy");
+                        $(scrollbarElems[elems]).mCustomScrollbar("destroy");
                     }
                 }
             }
         }
     </script>
-
 </body>
 </html>
