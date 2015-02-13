@@ -5,12 +5,12 @@ html {
 }
 
 body {
-    max-width: 1366px;
+    max-width: 1920px;
     padding: 0;
     margin: 0 auto;
     border: none;
     outline: 0;
-    font-family: "微软雅黑","Microsoft YaHei","Segoe UI","DroidSansFallback","华文细黑",HelveticaNeue-Medium,Arial;
+    font-family: "Segoe UI","微软雅黑","Microsoft YaHei","DroidSansFallback","华文细黑",HelveticaNeue-Medium,Arial;
     cursor: default;
     zoom: 1;
     -webkit-tap-highlight-color: transparent; /*iPhone去除点击时的阴影*/
@@ -31,7 +31,7 @@ a {
     }
 
 .title, dt {
-    font-family: "Microsoft YaHei Light","微软雅黑 Light","黑体","Segoe WP SemiLight","DroidSansFallback","华文细黑",HelveticaNeue-Thin;
+    font-family: "Segoe UI","Microsoft YaHei Light","微软雅黑 Light","黑体","Segoe WP SemiLight","DroidSansFallback","华文细黑",HelveticaNeue-Thin;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -44,12 +44,30 @@ a {
     -webkit-appearance: none; /*input,textarea预设外观*/
     user-select: none;
 }
+.error {
+    font-size: inherit;
+    font-family: inherit;
+    color: #ff0000;
+}
+.btn {
+    background-color: transparent;
+    border-radius: .2em;
+    outline: 0;
+    cursor: pointer;
+    opacity: .6;
+    font-family:inherit;
+    white-space:nowrap;
+}
+    .btn:hover,
+    .btn:active {
+        opacity:1;
+    }
 /*bg*/
 .bg-div {
-    display:none;
+    display: none;
 }
 /*header*/
-header {
+.header {
     position: fixed;
     display: none;
     max-width: 100%;
@@ -57,6 +75,7 @@ header {
     top: 0;
     background: #3EC1FF;
     border-bottom: 1px solid rgba(255,255,255,.5);
+    z-index:1000;
 }
 
 .header-titles {
@@ -95,7 +114,9 @@ header {
 /*content start*/
 /*aside*/
 #content {
-    margin-top: 3rem;
+    margin-top: 3.5rem;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 .aside {
@@ -103,7 +124,7 @@ header {
     max-width: 100%;
     background-color: #3EC1FF;
     color: #FFF;
-    transition: display linear .2s;
+    transition: height linear .2s;
 }
 
     .aside.aside-show {
@@ -181,6 +202,32 @@ header {
         display: none;
     }
 
+#defaultPage {
+    display:block;
+}
+#addPage,
+#dialogPage {
+    display:none;
+}
+
+   #defaultPage.addPage-show,
+    #dialogPage.addPage-show {
+        display:none;
+    }
+
+    #addPage.addPage-show {
+        display: block;
+    }
+
+    #defaultPage.dialogPage-show,
+    #addPage.dialogPage-show {
+        display: none;
+    }
+
+    #dialogPage.dialogPage-show {
+        display: block;
+    }
+/*defaultPage*/
 .default-page-title {
     padding: .3em 0;
     margin: 0;
@@ -195,10 +242,59 @@ header {
     text-align: center;
     font-size: 1rem;
 }
+/*addPage*/
 
+.writer-info-input-title {
+    padding: .5em 1em;
+    margin:0;
+    font-weight: normal;
+    font-size: 1.3rem;
+    white-space:nowrap;
+    overflow:hidden;
+}
+.writer-info-input-list {
+    margin: 0;
+    padding: .5em 1.5em;
+    list-style: none;
+    font-size: 1rem;
+}
+.writer-info-input-label {
+    padding:.25em .5em;
+}
+.writer-info-inputer {
+    display: block;
+    min-width: 100%;
+    width: 8rem;
+    max-width: 100%;
+    background-color: transparent;
+    overflow: hidden;
+    margin:.25em 0;
+    padding: .25em 1.5em;
+    font-family: inherit;
+    font-size: .85rem;
+    border: none;
+    outline: 0;
+}
+.writer-info-input-hr {
+    font-size: 1rem;
+    margin: .8em;
+    outline: 0;
+    border: 1px dashed rgba(255,255,255,.5);
+}
+.writer-info-input-btn-group {
+    font-size: 1rem;
+    padding: 1em 2em 0;
+    text-align: right;
+}
+.writer-info-input-btn {
+    padding: .25em 1em;
+    border: 1px solid;
+    font-size: 1rem;
+    color: #3EC1FF;
+}
 /*content end*/
 footer {
-    display:none;
+    display: none;
 }
 /*default screen min-width=320px*/
 
@@ -212,6 +308,7 @@ footer {
     .header-titles > .main-title {
         font-size: 2rem;
     }
+
     .btn-add {
         height: auto;
         width: auto;
@@ -220,13 +317,14 @@ footer {
         border-width: .12em;
         border-radius: 10%;
         font-weight: 400;
-        font-size:1.2rem;
+        font-size: 1.2rem;
     }
     /*content*/
     #content {
-        margin-top:4rem;
+        margin-top: 4rem;
     }
-        .default-page-title {
+
+    .default-page-title {
         padding: .2em 0;
         font-size: 3rem;
     }
@@ -234,6 +332,7 @@ footer {
     .default-page-sub-title {
         font-size: 1.1rem;
     }
+
     .writer-info {
         font-size: .9rem;
     }
@@ -269,6 +368,7 @@ footer {
             }
 
     .watermark {
+        display:none;
         position: fixed;
         bottom: .5em;
         right: 0;
@@ -300,29 +400,46 @@ footer {
         font-size: 16px;
         -ms-touch-action: none;
     }
-
-    body {
-        background-position: bottom right;
-        background-repeat: repeat;
-        background-size: contain;
-    }
     /*bg*/
     .bg-div {
-        position:fixed;
-        z-index:-2;
-    }
-    .bg-div,
-    .bg-img {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -2;
+        background-position: top center;
+        background-repeat: repeat;
+        background-size: cover;
+        background-size: auto 100%;
         height: 100%;
         width: 100%;
         max-height: 100%;
         max-width: 100%;
-        overflow:hidden;
+        overflow: hidden;
+        -webkit-filter: blur(3px); /* Chrome, Opera */
+        -moz-filter: blur(3px);
+        -ms-filter: 'alpha(opacity=50)';
+        filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=3, MakeShadow=false);
+      /* filter:url('blur.svg');*/ 
+        filter: blur(3px);
+    /*    background-image:url('blur.svg');*/
+        text-align:center;
+    }
+
+        .bg-div.deeper {
+            -webkit-filter: blur(10px); /* Chrome, Opera */
+            -moz-filter: blur(10px);
+            -ms-filter: 'alpha(opacity=30)';
+            filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=10, MakeShadow=false);
+            filter: blur(10px);
+        }
+    .opacity.deeper {
+            opacity:.3;
     }
     /*header*/
-    header {
+    .header {
         border-bottom: none;
-        position:static;
+        position: static;
     }
 
     .header-titles > li {
@@ -359,13 +476,16 @@ footer {
         -ms-touch-action: pan-y;
         -ms-overflow-style: -ms-autohiding-scrollbar;
     }
+
         .aside.aside-show,
         .article.aside-show {
-            display:inline-block;
+            display: inline-block;
         }
+
     .aside {
         vertical-align: top;
         max-width: 250px;
+        text-shadow: 0 0 4px #BABABA;
     }
 
     .aside-menu {
@@ -375,11 +495,14 @@ footer {
     .writer-info {
         font-size: 1rem;
     }
-
+    .article {
+        text-shadow: 0 0 1px #BABABA;
+    }
     #defaultPage {
         width: 100%;
         min-height: 100%;
         color: rgba(0,0,0,.7);
+
     }
 
     .default-page-title {
@@ -401,9 +524,19 @@ footer {
     }
 
     .watermark {
+        display:block;
         bottom: .4em;
         color: #FFF;
         opacity: .6;
         text-shadow: -5px -2px 1px #000;
     }
+
+    /*fiter
+    .header,
+    .aside {
+        -webkit-filter: opacity(50%);
+        -ms-filter: 'alpha(opacity=100)';
+        filter: opacity(50%);
+    }*/
+
 }
