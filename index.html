@@ -30,7 +30,7 @@
     <link href="common/style.css" rel="stylesheet" />
     <title>解忧集 | 祥琳健尚-望晴-望晴2_UI-雯晴|minQ</title>
 </head>
-<body style="display:none">
+<body style="opacity:0">
     <div class="bg-div">
         <canvas id="bgCanvas" style="display:none;"></canvas>
     </div>
@@ -52,60 +52,59 @@
     </header>
     <div id="content" data-role="content">
         <aside class="aside">
-            <ol class="aside-menu">
-                <li data-id="1">
-                    <dl class="writer-info">
-                        <dt>第一位来信者</dt>
-                        <dd title="苏苏，女，中国，河北，石家庄"><span class="info-name">基本信息：</span>苏苏，女，中国，河北，石家庄</dd>
-                        <dd title="感情问题，与不喜欢的人在一起"><span class="info-name">主题：</span>感情问题，与不喜欢的人在一起</dd>
-                    </dl>
-                </li>
+            <ol class="aside-menu" id="asideMenu">
+                <li class="no-topic-title" data-id="-1">暂无来信者</li>
             </ol>
         </aside>
         <article class="article">
-            <div id="defaultPage">
-                <div class="default-page-title no-select title">解<br/>忧<br/>集</div>
-                <p class="default-page-sub-title no-select">祥琳健尚&nbsp;希璇文学库</p>
-                <p class="default-page-sub-title no-select">二〇一四甲午年&nbsp;八月</p>
-            </div>
-            <div id="addPage">
-                <form id="addPageForm">
-                    <h4 class="writer-info-input-title">基本信息</h4>
-                    <ol class="writer-info-input-list">
-                        <li>
-                            <label class="writer-info-input-label">姓名</label>
-                            <input type="text" required="required" name="writerName" id="writerName" placeholder="姓名" value="" class="writer-info-inputer" />
-                        </li>
-                        <li>
-                            <label class="writer-info-input-label">性别</label>
-                            <select id="writerIsMan" name="writerIsMan" class="writer-info-inputer" required="required">
-                                <option disabled="disabled" value="" selected="selected">请选择…</option>
-                                <option value="0">男</option>
-                                <option value="1">女</option>
-                                <option value="2">未知</option>
-                            </select>
-                        </li>
-                        <li>
-                            <label class="writer-info-input-label">地区</label>
-                            <input type="text" name="writerArea" id="writerArea" placeholder="地区" value="" class="writer-info-inputer" required="required" />
-                        </li>
-                    </ol>
-                    <hr class="writer-info-input-hr" />
-                    <h4 class="writer-info-input-title">主题</h4>
-                    <ol class="writer-info-input-list">
-                        <li>
-                            <label class="writer-info-input-label">主题</label>
-                            <input type="text" name="topicTitle" id="topicTitle" placeholder="主题" value="" class="writer-info-inputer" required="required" />
-                        </li>
-                    </ol>
-                    <div class="writer-info-input-btn-group">
-                        <button class="writer-info-input-btn btn" type="button" id="addPageBtn">添加</button>
-                    </div>
-                </form>
-            </div>
-            <div id="dialogPage">
-
-            </div>
+                <!--主页 start-->
+                <div id="defaultPage">
+                    <div class="default-page-title no-select title">解<br />忧<br />集</div>
+                    <p class="default-page-sub-title no-select">祥琳健尚&nbsp;希璇文学库</p>
+                    <p class="default-page-sub-title no-select">二〇一四甲午年&nbsp;八月</p>
+                </div>
+                <!--主页 end-->
+                <!--添加来信者 start-->
+                <div id="addPage">
+                    <form id="addPageForm">
+                        <h4 class="writer-info-input-title">基本信息</h4>
+                        <ol class="writer-info-input-list">
+                            <li>
+                                <label class="writer-info-input-label">姓名</label>
+                                <input type="text" required="required" name="writerName" id="writerName" placeholder="姓名" value="" class="writer-info-inputer" />
+                            </li>
+                            <li>
+                                <label class="writer-info-input-label">性别</label>
+                                <select id="writerIsMan" name="writerIsMan" class="writer-info-inputer" required="required">
+                                    <option disabled="disabled" value="" selected="selected">请选择…</option>
+                                    <option value="0">男</option>
+                                    <option value="1">女</option>
+                                    <option value="2">未知</option>
+                                </select>
+                            </li>
+                            <li>
+                                <label class="writer-info-input-label">地区</label>
+                                <input type="text" name="writerArea" id="writerArea" placeholder="地区" value="" class="writer-info-inputer" required="required" />
+                            </li>
+                        </ol>
+                        <hr class="writer-info-input-hr" />
+                        <h4 class="writer-info-input-title">主题</h4>
+                        <ol class="writer-info-input-list">
+                            <li>
+                                <label class="writer-info-input-label">主题</label>
+                                <input type="text" name="topicTitle" id="topicTitle" placeholder="主题" value="" class="writer-info-inputer" required="required" />
+                            </li>
+                        </ol>
+                        <div class="writer-info-input-btn-group">
+                            <button class="writer-info-input-btn btn" type="button" id="addPageBtn">添加</button>
+                        </div>
+                    </form>
+                </div>
+                <!--添加来信者 end-->
+                <!--对话 start-->
+                <div id="dialogPage">
+                </div>
+                <!--对话 end-->
         </article>
     </div>
     <footer data-role="footer">
@@ -120,21 +119,33 @@
             ナミヤ雑貨店
         </p>
     </footer>
+    <div id="topicTitleTemp" class="hide">
+        <ol>
+            <li data-id="writerID">
+                <dl class="writer-info">
+                    <dt>第listIndex位来信者</dt>
+                    <dd title="writerInfo"><span class="info-name">基本信息：</span>writerInfo</dd>
+                    <dd title="topicTitle"><span class="info-name">主题：</span>topicTitle</dd>
+                </dl>
+            </li>
+        </ol>
+    </div>
     <script src="common/jquery-1.11.2.js"></script>
     <script src="common/stackBlur.min.js"></script>
     <script type='text/javascript'>
         var titleWidths = new Array();
-        var scrollbarElems = ['.aside', '.article'],
+        var contentElems = ['.aside', '.article'],
             scrollbarStyle = {
                 axis: "y",
                 scrollButtons: { enable: false },
                 theme: "rounded",
             },
-            pageElems = ['#defaultPage', '#addPage', '#dialogPage'];
+            pageElems = ['#defaultPage', '#addPage', '#dialogPage'],
+            scrollbarElems = [contentElems[0]].concat(pageElems);
         if (window.navigator.msPointerEnabled) {
             scrollbarStyle.theme = 'light-2';
         }
-        var imagesCounts = 228, backgroundImage, bgImage = new Image(),isNotSupportFilter;
+        var imagesCounts = 389, backgroundImage, bgImage = new Image(),isNotSupportFilter;
         if (isPcScreen) {
             //预加载图片
             var $bgDiv = $('.bg-div');
@@ -207,46 +218,53 @@
             });
             $('header').hslTorgba('background-color', 'hsl(' + hsl + ',50%,' + (hslp += 10) + '%)', .5).fadeIn(100);
             $('aside').hslTorgba('background-color', 'hsl(' + hsl + ',50%,' + (hslp += 10) + '%)', .8);
-            $('body').css({
-                'background-color': 'hsl(' + hsl + ',50%,' + (hslp += 10) + '%)',
-            }).fadeIn(800);
+            $('body').animate({
+                'opacity':1
+            });
             /*设置header背景色 End*/
             /*设置header动画 Start*/
+            var isHeaderTitleToggle = false;
             $('.header-titles').click(function (e) {
-                var $src = $(e.target || event.srcElement);
-                if (!isMainTitleHidden && $(window).width() >= pcScreenMinWidth) {
-                    isMainTitleHidden = true;
-                    //console.log($src.parent().html());
-                    if ($src.hasClass('header-titles') || $src.parent().hasClass('main-title')) {
-                        //title
-                        for (var i = 0, elemWidth,
-                            elems = $('.header-titles li.title:not(:last)'),
-                           $elem; !!($elem = $(elems[i])).length; i++) {
-                            elemWidth = $elem.width();
-                            $elem.animate({
-                                'width': parseInt(elemWidth) > 0 ? (!titleWidths[i] ? titleWidths[i] = elemWidth : 0) && 0 : titleWidths[i]
+                if (!isHeaderTitleToggle) {
+                    isHeaderTitleToggle = true;
+                    var $src = $(e.target || event.srcElement);
+                    if (!isMainTitleHidden && $(window).width() >= pcScreenMinWidth) {
+                        isMainTitleHidden = true;
+                        //console.log($src.parent().html());
+                        if ($src.hasClass('header-titles') || $src.parent().hasClass('main-title')) {
+                            //title
+                            for (var i = 0, elemWidth,
+                                elems = $('.header-titles li.title:not(:last)'),
+                               $elem; !!($elem = $(elems[i])).length; i++) {
+                                elemWidth = $elem.width();
+                                $elem.animate({
+                                    'width': parseInt(elemWidth) > 0 ? (!titleWidths[i] ? titleWidths[i] = elemWidth : 0) && 0 : titleWidths[i]
+                                });
+                            }
+                            //aside&article
+                            var $asideElem = $(contentElems[0]),
+                                asideWidth = parseInt($asideElem.css('max-width'), 0) - parseInt($asideElem.css('width'), 0);
+                            $asideElem.animate({
+                                width: asideWidth,
+                            });
+                            $(contentElems[1]).animate({
+                                'width': $('#content').innerWidth() - asideWidth,
+                                'max-width': $('#content').innerWidth() - asideWidth,
                             });
                         }
-                        //aside&article
-                        var $asideElem = $(scrollbarElems[0]),
-                            asideWidth = parseInt($asideElem.css('max-width'), 0) - parseInt($asideElem.css('width'), 0);
-                        $asideElem.animate({
-                            width: asideWidth,
-                        });
-                        $(scrollbarElems[1]).animate({
-                            'width': $('#content').innerWidth() - asideWidth,
-                            'max-width': $('#content').innerWidth() - asideWidth,
-                        });
-                    }
-                    isMainTitleHidden = false;
-                } else if ($(window).width() < pcScreenMinWidth) {
-                    //显示或隐藏aside/article
-                    if ($src.hasClass('header-titles') || $src.parent().hasClass('main-title')) {
-                        for (var elem in scrollbarElems) {
-                            $(scrollbarElems[elem]).toggleClass('aside-show');
+                        isMainTitleHidden = false;
+                    } else if ($(window).width() < pcScreenMinWidth) {
+                        //显示或隐藏aside/article
+                        if ($src.hasClass('header-titles') || $src.parent().hasClass('main-title')) {
+                            for (var elem in contentElems) {
+                                $(contentElems[elem]).toggleClass('aside-show');
+                            }
+                            setMainTitle();
                         }
-                        setMainTitle();
                     }
+                    setTimeout(function () {
+                        isHeaderTitleToggle = false;
+                    }, 500);
                 }
             });
             /*设置header动画 End*/
@@ -258,7 +276,7 @@
                     currentWindowWidth = $(this).width();
                     //处理屏幕宽度部分
                     if (currentWindowWidth >= pcScreenMinWidth) {
-                        if (Math.abs(currentWindowWidth - windowWidth) > 100) {
+                        if (Math.abs(currentWindowWidth - windowWidth) > 100 || currentWindowWidth === windowWidth) {
                             clearTimeout(resizeWidthTimer);
                             windowWidth = currentWindowWidth;
                             resizeWidthTimer = setTimeout(resizeHeaderTitle, 200);
@@ -296,8 +314,11 @@
             });
 
             //aside-menu click
-            $('.aside-menu li').click(function () {
-                showDialogByID($(this).attr('data-id'),$(this).find('dd:last').attr('title'));
+            $('.aside-menu').click(function (e) {
+                var $writerElem = $($(e.target || window.event.srcElement).closest('li'));
+                if (!!$writerElem.length) {
+                    showDialogByID($writerElem.attr('data-id'), $writerElem.find('dd:last').attr('title'));
+                }
             });
         });
         //resize headerTitle size
@@ -314,8 +335,9 @@
                     'height': contentHeight,
                     'max-height': contentHeight,
                 });
-                var contentWidth = $('#content').innerWidth() - $(scrollbarElems[0]).css('width', 'auto').outerWidth();
-                $(scrollbarElems[1]).animate({
+
+                var contentWidth = $('#content').innerWidth() - $(contentElems[0]).css('width', 'auto').outerWidth();
+                $(contentElems[1]).animate({
                     'width': contentWidth,
                     'max-width': contentWidth,
                 });
@@ -325,10 +347,7 @@
                     $(scrollbarElems[elems]).mCustomScrollbar("update");
                 }
                 //全屏时mainTitle不显示‘目录’
-                if ($(scrollbarElems[0]).hasClass('aside-show')) {
-                    for (var i=0,elem; (elem = scrollbarElems[i]) != null; i++) {
-                        $(elem).removeClass('aside-show');
-                    }
+                if ($(contentElems[0]).hasClass('aside-show')) {
                     setMainTitle();
                 }
             } else {
@@ -337,15 +356,20 @@
                     'height': 'auto',
                     'max-height': '100%',
                 });
-                $(scrollbarElems[0]).css({
-                    'width': 'auto',
-                    'max-width': 'auto',
-                }).mCustomScrollbar("destroy");
-                $(scrollbarElems[1]).css({
+
+                $(contentElems[1]).css({
                     'width': 'auto',
                     'max-width': windowWidth,
-                }).mCustomScrollbar("destroy");
-
+                });
+                for (var i = 0, elem; (elem = scrollbarElems[i]) != null; i++) {
+                    $(elem).css({
+                        'width': 'auto',
+                        'max-width': 'auto',
+                    }).mCustomScrollbar("destroy");
+                }
+                if ($(contentElems[0]).hasClass('aside-show')) {
+                    setMainTitle('#asideMenuTitle');
+                }
             }
         }
         //设置显示的标题
@@ -355,7 +379,7 @@
             $('span',$mainTitle).css('display', 'none');
             if (!!displayTitleID) {
                 $(displayTitleID, $mainTitle).css('display', '');
-            } else if ($(scrollbarElems[0]).hasClass('aside-show')) {
+            } else if ($(contentElems[0]).hasClass('aside-show')&&$(window).width()<pcScreenMinWidth) {
                 $('#asideMenuTitle').css('display', '');
             } else {
                 $pagedefault = $(pageElems[0]);
@@ -374,18 +398,21 @@
         }
         //显示对话框
         function showDialogByID(writerID,topicTitle) {
-            if (!writerID) {
+            if (!writerID||writerID<0) {
                 showError('0x003无来信者ID');
             } else {
                 /*清空dialogPage*/
 
                 /*ajax dialog数据*/
                 /*显示dialogPage*/
+                //console.log(topicTitle);
                 showPageByIndex(2);
                 $(pageElems[2] + 'Title').text(topicTitle);
             }
         }
+        //显示子页面
         function showPageByIndex(index) {
+            //console.log(index);
             if (!index || index < 0 || index >= pageElems.length) {
                 showError('0x004显示子页面索引错误');
             } else {
@@ -393,8 +420,9 @@
                     showClass = pageElems[index].substring(1) + '-show',
                 removeClass = (pageElems[pageElems.length - index].substring(1) || '')+'-show';
                 //窄屏下隐藏aside
-                for (; (elem = scrollbarElems[i]) != null; i++) {
+                for (; (elem = contentElems[i]) != null; i++) {
                     $(elem).removeClass('aside-show');
+                    //console.log('remove asideShow');
                 }
                 //显示或隐藏目录
                 //console.log(index, showClass, removeClass);
@@ -411,10 +439,34 @@
                     setMainTitle(pageElems[index] + 'Title');
                     $('.bg-div').addClass('deeper');
                 }
-                if (isPcScreen) {
-                    $(scrollbarElems[1]).mCustomScrollbar("update");
-                }
+               // if (isPcScreen) {
+               //     $(contentElems[1]).mCustomScrollbar("update");
+               // }
             }
+        }
+        //添加主题到菜单
+        function addWriterInfoMenu(writerInfo) {
+            var topicTitleTemp = $('ol', $('#topicTitleTemp')).html(),
+                $asideMenu = $('#asideMenu');
+            $asideMenu.children('.no-topic-title').remove()
+            switch (writerInfo.writerIsMan) {
+                case '0':
+                    writerInfo.writerIsMan = '男';
+                    break;
+                case '1':
+                    writerInfo.writerIsMan = '女';
+                    break;
+                default:
+                    writerInfo.writerIsMan = '未知';
+            }
+            topicTitleTemp = topicTitleTemp
+                .replace(/writerID/g, writerInfo.writerID)
+                .replace(/writerInfo/g, [writerInfo.writerName, writerInfo.writerIsMan, writerInfo.writerArea].join('，'))
+                .replace(/topicTitle/g,writerInfo.topicTitle)
+                .replace(/listIndex/g, $asideMenu.children().length + 1);
+            $asideMenu.append(topicTitleTemp);
+            $(scrollbarElems[0]).mCustomScrollbar("update");
+            //console.log(topicTitleTemp);
         }
     </script>
     <script>
@@ -427,25 +479,27 @@
                     $addPageForm = $('#addPageForm');
                 $addPageBtn.attr('disabled', 'disabled');
 
-                if ($.checkFormRequired($addPageForm)) {
+                if ($.checkFormRequired($addPageForm,errorTips)) {
                     //必填的部分已经全部填完
                     $.ajax({
                         cache: true,
                         type: 'POST',
                         url: 'ajax/addTopic.asp',
-                        data: $addPageForm.serialize(),
+                        data: $addPageForm.serialize().replace(/\+/g, ''),
                     }).done(function (data) {
                         writer = $.parseJSON(data);
                         //显示以writerID为首的对话框
                         if (writer.writerID != -1) {
-                            showDialogByID(writer.writerID);
-                            $(this).removeAttr('disabled');
+                            $addPageBtn.removeAttr('disabled');
+                            //将整个添加来信者queryString转成json对象添加到asideMenu中
+                            addWriterInfoMenu($.queryStringToJson($addPageForm.serialize().replace(/\+/g, '') + '&writerID=' + writer.writerID));
+                            showDialogByID(writer.writerID, $addPageForm.find('#topicTitle').val());
                         } else {
                             showError('0x001添加失败,无法写入数据库');
                         }
                     }).fail(function (jqXHR, textStatus, errorThrown) {
                         showError('0x002添加失败，ajax失败'+textStatus)
-                        $(this).removeAttr('disabled');
+                        $addPageBtn.removeAttr('disabled');
                     });
                 } else {
                     $addPageBtn.removeAttr('disabled');

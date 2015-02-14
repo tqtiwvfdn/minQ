@@ -44,6 +44,7 @@ a {
     -webkit-appearance: none; /*input,textarea预设外观*/
     user-select: none;
 }
+
 .error {
     font-size: .8em;
     font-family: inherit;
@@ -51,22 +52,29 @@ a {
     vertical-align: top;
     padding-left: .5em;
 }
+
+.hide {
+    display: none;
+}
+
 .btn {
     background-color: transparent;
     border-radius: .2em;
     outline: 0;
     cursor: pointer;
     opacity: .6;
-    font-family:inherit;
-    white-space:nowrap;
+    font-family: inherit;
+    white-space: nowrap;
 }
+
     .btn:hover,
     .btn:active {
-        opacity:1;
+        opacity: 1;
     }
+
     .btn[disabled] {
         color: #CCC;
-        opacity:1;
+        opacity: 1;
     }
 /*bg*/
 .bg-div {
@@ -81,7 +89,7 @@ a {
     top: 0;
     background: #3EC1FF;
     border-bottom: 1px solid rgba(255,255,255,.5);
-    z-index:1000;
+    z-index: 1000;
 }
 
 .header-titles {
@@ -133,6 +141,7 @@ a {
     max-width: 100%;
     background-color: #3EC1FF;
     color: #FFF;
+    text-shadow: 0 0 4px #AAAAAA;
     transition: height linear .2s;
 }
 
@@ -155,15 +164,22 @@ a {
             border-top: 1px dotted rgba(255,255,255,.5);
         }
 
+.no-topic-title {
+    text-align: center;
+    opacity: .9;
+}
+
 .btn-add {
     display: block;
     margin-top: -.2em;
     height: 1.5em;
     width: 1.6em;
+    padding: 0 0 .18em 0;
     background-color: transparent;
     border: 0.1em dashed #FFF;
     border-radius: .2em;
     outline: 0;
+    text-align: center;
     font-size: 1.5rem;
     font-weight: 900;
     line-height: 1em;
@@ -211,31 +227,22 @@ a {
         display: none;
     }
 
-#defaultPage {
-    display:block;
-}
-#addPage,
-#dialogPage {
-    display:none;
+#defaultPage,
+#addPage.addPage-show,
+#dialogPage.dialogPage-show {
+    display: block;
 }
 
-   #defaultPage.addPage-show,
-    #dialogPage.addPage-show {
-        display:none;
-    }
-
-    #addPage.addPage-show {
-        display: block;
-    }
-
+    #addPage,
+    #dialogPage,
+    #defaultPage.addPage-show,
+    #dialogPage.addPage-show,
     #defaultPage.dialogPage-show,
     #addPage.dialogPage-show {
         display: none;
     }
 
-    #dialogPage.dialogPage-show {
-        display: block;
-    }
+
 /*defaultPage*/
 .default-page-title {
     padding: .3em 0;
@@ -255,21 +262,24 @@ a {
 
 .writer-info-input-title {
     padding: .5em 1em;
-    margin:0;
+    margin: 0;
     font-weight: normal;
     font-size: 1.3rem;
-    white-space:nowrap;
-    overflow:hidden;
+    white-space: nowrap;
+    overflow: hidden;
 }
+
 .writer-info-input-list {
     margin: 0;
     padding: .5em 1.5em;
     list-style: none;
     font-size: 1rem;
 }
+
 .writer-info-input-label {
-    padding:.25em .5em;
+    padding: .25em .5em;
 }
+
 .writer-info-inputer {
     display: block;
     min-width: 100%;
@@ -277,26 +287,30 @@ a {
     max-width: 100%;
     background-color: transparent;
     overflow: hidden;
-    margin:.25em 0;
+    margin: .25em 0;
     padding: .25em 1.5em;
     font-family: inherit;
     font-size: .85rem;
     border: none;
     outline: 0;
 }
+
 .writer-info-input-hr {
     font-size: 1rem;
     margin: .8em;
     outline: 0;
     border: 1px dashed rgba(255,255,255,.5);
 }
+
 .writer-info-input-btn-group {
     font-size: 1rem;
     padding: 1em 2em 0;
     text-align: right;
 }
+
 .writer-info-input-btn {
     padding: .25em 1em;
+    margin-bottom: 4em;
     border: 1px solid;
     font-size: 1rem;
     color: #3EC1FF;
@@ -377,7 +391,7 @@ footer {
             }
 
     .watermark {
-        display:none;
+        display: none;
         position: fixed;
         bottom: .5em;
         right: 0;
@@ -425,17 +439,17 @@ footer {
         max-height: 100%;
         max-width: 100%;
         overflow: hidden;
-        -webkit-filter: blur(3px); /* Chrome, Opera */
+        -webkit-filter: blur(1px); /* Chrome, Opera */
         -moz-filter: blur(3px);
         -ms-filter: 'alpha(opacity=50)';
         filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=3, MakeShadow=false);
-      /* filter:url('blur.svg');*/ 
+        /* filter:url('blur.svg');*/
         filter: blur(3px);
-    /*    background-image:url('blur.svg');*/
-        text-align:center;
-        transition:-ms-filter linear .5s;
-        -webkit-transition:-webkit-filter linear .5s;
-        -moz-transition:-moz-filter linear .5s;
+        /*    background-image:url('blur.svg');*/
+        text-align: center;
+        transition: -ms-filter linear .5s;
+        -webkit-transition: -webkit-filter linear .5s;
+        -moz-transition: -moz-filter linear .5s;
     }
 
         .bg-div.deeper {
@@ -445,8 +459,9 @@ footer {
             filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=10, MakeShadow=false);
             filter: blur(10px);
         }
+
     .opacity.deeper {
-            opacity:.3;
+        opacity: .3;
     }
     /*header*/
     .header {
@@ -497,25 +512,69 @@ footer {
     .aside {
         vertical-align: top;
         max-width: 250px;
-        text-shadow: 0 0 4px #BABABA;
+        width: 250px;
     }
 
     .aside-menu {
         padding: .5em;
     }
 
+        .aside-menu > li {
+            min-width: 240px;
+        }
+
     .writer-info {
         font-size: 1rem;
     }
+
     .article {
         text-shadow: 0 0 1px #BABABA;
+        position: relative;
     }
-    #defaultPage {
-        width: 100%;
-        min-height: 100%;
-        color: rgba(0,0,0,.7);
 
+    #defaultPage {
+        color: rgba(0,0,0,.7);
     }
+
+    #defaultPage,
+    #addPage,
+    #dialogPage {
+        position: absolute;
+        min-height: 100%;
+        min-width: 100%;
+        height: 100%;
+        width: 100%;
+        max-height: 100%;
+        max-width: 100%;
+        top: 0;
+        left: 0;
+        transition: left linear .5s;
+    }
+
+        #defaultPage,
+        #addPage.addPage-show,
+        #dialogPage.dialogPage-show {
+            left: 0;
+        }
+
+            #defaultPage.addPage-show,
+            #defaultPage.dialogPage-show {
+                display: block;
+                left: -100%;
+            }
+
+        #addPage,
+        #addPage.dialogPage-show {
+            display: block;
+            left: 100%;
+        }
+
+        #dialogPage,
+        #dialogPage.addPage-show {
+            display: block;
+            left: 200%;
+        }
+
 
     .default-page-title {
         padding: .8em 0;
@@ -536,7 +595,7 @@ footer {
     }
 
     .watermark {
-        display:block;
+        display: block;
         bottom: .4em;
         color: #FFF;
         opacity: .6;

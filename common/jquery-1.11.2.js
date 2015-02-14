@@ -10352,7 +10352,8 @@ jQuery.extend({
         var r = window.location.search.substr(1).match(reg);
         if (r != null) return unescape(r[2]); return null;
     },
-    checkFormRequired: function ($checkForm) {
+    //检查必须填写部分
+    checkFormRequired: function ($checkForm,errorTips) {
         var $requiredParams = $('[required="required"]', $checkForm);
         for (var i = 0, $elem; !!($elem = $($requiredParams[i])).length; i++) {
             $elem.prev().children('.error').remove();
@@ -10363,6 +10364,11 @@ jQuery.extend({
             }
         }
         return true;
+    },
+    //将queryString转成json语句
+    queryStringToJson: function (queryString) {
+        queryString=decodeURIComponent(queryString, true);
+        return jQuery.parseJSON('{"' + queryString.replace(/&/g, '\",\"').replace(/=/g, '\":\"') + '"}');
     }
 });
 jQuery.fn.extend({
@@ -10411,9 +10417,9 @@ jQuery.fn.extend({
         var $elem = $(this);
         opacity = opacity || 1;
         $elem.css(targetCSS, hsl);
-        if (jQuery.support.opacity) {
-            var css = $elem.css(targetCSS);
-            css = css.replace('rgb', 'rgba').replace(')', ',' + opacity + ')');
+        var css = $elem.css(targetCSS);
+        css = css.replace('rgb', 'rgba').replace(')', ',' + opacity + ')');
+        if (jQuery.support.opacity && $(window).width() >= pcScreenMinWidth) {
             $elem.css(targetCSS, css);
         }
         /*统一窄屏下无透明*/
