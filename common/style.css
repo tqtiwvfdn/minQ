@@ -45,9 +45,11 @@ a {
     user-select: none;
 }
 .error {
-    font-size: inherit;
+    font-size: .8em;
     font-family: inherit;
     color: #ff0000;
+    vertical-align: top;
+    padding-left: .5em;
 }
 .btn {
     background-color: transparent;
@@ -60,6 +62,10 @@ a {
 }
     .btn:hover,
     .btn:active {
+        opacity:1;
+    }
+    .btn[disabled] {
+        color: #CCC;
         opacity:1;
     }
 /*bg*/
@@ -106,6 +112,9 @@ a {
     .header-titles > .main-title {
         display: inline-block;
         font-size: 1.8rem;
+        max-width: 60%;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .header-titles > .hide-title {
@@ -424,6 +433,9 @@ footer {
         filter: blur(3px);
     /*    background-image:url('blur.svg');*/
         text-align:center;
+        transition:-ms-filter linear .5s;
+        -webkit-transition:-webkit-filter linear .5s;
+        -moz-transition:-moz-filter linear .5s;
     }
 
         .bg-div.deeper {

@@ -30,7 +30,7 @@
     <link href="common/style.css" rel="stylesheet" />
     <title>解忧集 | 祥琳健尚-望晴-望晴2_UI-雯晴|minQ</title>
 </head>
-<body style="opacity:0">
+<body style="display:none">
     <div class="bg-div">
         <canvas id="bgCanvas" style="display:none;"></canvas>
     </div>
@@ -38,8 +38,13 @@
         <ul class="header-titles no-select">
             <li class="title"><a href="/">祥琳健尚</a></li>
             <li class="title"><a href="/yips/yips.asp">望晴</a></li>
-            <li class="title"><a href="./">雯晴minQ</a></li>
-            <li id="mainTitle" class="title main-title">解忧集</li>
+            <li class="title"><a href="./">雯晴minQ-解忧集</a></li>
+            <li id="mainTitle" class="title main-title">
+                <span id="defaultPageTitle">主页</span>
+                <span id="addPageTitle" style="display:none">添加来信者</span>
+                <span id="dialogPageTitle" style="display:none"></span>
+                <span id="asideMenuTitle" style="display:none">目录</span>
+            </li>
             <li class="func-btns">
                 <button id="BtnAdd" class="title btn-add no-select">+<span class="info-name">&nbsp;添加</span></button>
             </li>
@@ -69,11 +74,11 @@
                     <ol class="writer-info-input-list">
                         <li>
                             <label class="writer-info-input-label">姓名</label>
-                            <input type="text" name="writerName" id="writerName" placeholder="姓名" value="" class="writer-info-inputer" />
+                            <input type="text" required="required" name="writerName" id="writerName" placeholder="姓名" value="" class="writer-info-inputer" />
                         </li>
                         <li>
                             <label class="writer-info-input-label">性别</label>
-                            <select id="writerIsMan" class="writer-info-inputer">
+                            <select id="writerIsMan" name="writerIsMan" class="writer-info-inputer" required="required">
                                 <option disabled="disabled" value="" selected="selected">请选择…</option>
                                 <option value="0">男</option>
                                 <option value="1">女</option>
@@ -82,7 +87,7 @@
                         </li>
                         <li>
                             <label class="writer-info-input-label">地区</label>
-                            <input type="text" name="writerArea" id="writerArea" placeholder="地区" value="" class="writer-info-inputer" />
+                            <input type="text" name="writerArea" id="writerArea" placeholder="地区" value="" class="writer-info-inputer" required="required" />
                         </li>
                     </ol>
                     <hr class="writer-info-input-hr" />
@@ -90,11 +95,11 @@
                     <ol class="writer-info-input-list">
                         <li>
                             <label class="writer-info-input-label">主题</label>
-                            <input type="text" name="topicTitle" id="topicTitle" placeholder="主题" value="" class="writer-info-inputer" />
+                            <input type="text" name="topicTitle" id="topicTitle" placeholder="主题" value="" class="writer-info-inputer" required="required" />
                         </li>
                     </ol>
                     <div class="writer-info-input-btn-group">
-                        <button class="writer-info-input-btn btn" type="button">添加</button>
+                        <button class="writer-info-input-btn btn" type="button" id="addPageBtn">添加</button>
                     </div>
                 </form>
             </div>
@@ -129,7 +134,7 @@
         if (window.navigator.msPointerEnabled) {
             scrollbarStyle.theme = 'light-2';
         }
-        var imagesCounts = 204, backgroundImage, bgImage = new Image(),isNotSupportFilter;
+        var imagesCounts = 228, backgroundImage, bgImage = new Image(),isNotSupportFilter;
         if (isPcScreen) {
             //预加载图片
             var $bgDiv = $('.bg-div');
@@ -158,20 +163,20 @@
                             }).fadeIn(500);
                             //IE10不支持width=auto start
                             if (bgCanvasProportion !== ($bgCanvas.width() / $bgCanvas.height()).toFixed(2)) {
-                                alert('not-fixed');
+                             //   alert('not-fixed');
                                 $bgCanvas.css({
                                     'width': bgCanvasProportion*$bgCanvas.height()
                                 });
                             }
                             $(window).resize(function () {
-                                if (isPcScreen && isNotSupportFilter && $(this).width() > pcScreenMinWidth) {
+                                if (isPcScreen && isNotSupportFilter && $(this).width() >= pcScreenMinWidth) {
                                     $bgCanvas.css({
                                         'width': bgCanvasProportion * $bgCanvas.height()
                                     });
                                 }
                             });
                             //IE10不支持width=auto end
-                        }, 1000);
+                        }, 800);
                     }
                     backgroundImage = 'url(\'' + backgroundImage + '\')';
                     $bgDiv.css('background-image', backgroundImage);
@@ -200,19 +205,19 @@
             $('.header-titles li.title:not(:last)').each(function () {
                 $(this).hslTorgba('background-color','hsl(' + hsl + ',50%,' + (hslp += 10) + '%)',hslp*.01);
             });
-            $('header').hslTorgba('background-color', 'hsl(' + hsl + ',50%,' + (hslp += 10) + '%)', .5).fadeIn();
+            $('header').hslTorgba('background-color', 'hsl(' + hsl + ',50%,' + (hslp += 10) + '%)', .5).fadeIn(100);
             $('aside').hslTorgba('background-color', 'hsl(' + hsl + ',50%,' + (hslp += 10) + '%)', .8);
             $('body').css({
                 'background-color': 'hsl(' + hsl + ',50%,' + (hslp += 10) + '%)',
-                'opacity': 1,
-            }).fadeIn();
+            }).fadeIn(800);
             /*设置header背景色 End*/
             /*设置header动画 Start*/
             $('.header-titles').click(function (e) {
                 var $src = $(e.target || event.srcElement);
                 if (!isMainTitleHidden && $(window).width() >= pcScreenMinWidth) {
                     isMainTitleHidden = true;
-                    if ($src.hasClass('header-titles') || $src.hasClass('main-title')) {
+                    //console.log($src.parent().html());
+                    if ($src.hasClass('header-titles') || $src.parent().hasClass('main-title')) {
                         //title
                         for (var i = 0, elemWidth,
                             elems = $('.header-titles li.title:not(:last)'),
@@ -235,10 +240,12 @@
                     }
                     isMainTitleHidden = false;
                 } else if ($(window).width() < pcScreenMinWidth) {
-                    if ($src.hasClass('header-titles') || $src.hasClass('main-title')) {
+                    //显示或隐藏aside/article
+                    if ($src.hasClass('header-titles') || $src.parent().hasClass('main-title')) {
                         for (var elem in scrollbarElems) {
                             $(scrollbarElems[elem]).toggleClass('aside-show');
                         }
+                        setMainTitle();
                     }
                 }
             });
@@ -247,6 +254,7 @@
             var windowWidth=0, currentWindowWidth, resizeWidthTimer,resizeHeightTimer;
             $(window).resize(function () {
                 if (isPcScreen) {
+                    
                     currentWindowWidth = $(this).width();
                     //处理屏幕宽度部分
                     if (currentWindowWidth >= pcScreenMinWidth) {
@@ -284,33 +292,12 @@
 
             //btn-add click
             $('#BtnAdd').click(function () {
-                var i = 0, elem;
-
-                //窄屏下隐藏aside
-                for (; (elem = scrollbarElems[i]) != null; i++) {
-                    $(elem).removeClass('aside-show');
-                }
-                //显示或影厂目录
-                if ($(pageElems[1]).hasClass('addPage-show')) {
-                    for (i = 0; (elem = pageElems[i]) != null; i++) {
-                        $(elem).removeClass('addPage-show');
-                    }
-                    $('.bg-div').removeClass('deeper');
-                } else {
-                    for (i = 0; (elem = pageElems[i]) != null; i++) {
-                        $(elem).removeClass('dialogPage-show').addClass('addPage-show');
-                    }
-                    $('.bg-div').addClass('deeper');
-                }
-                if (isPcScreen) {
-                   // $(pageElems[1]).css('min-height', $(scrollbarElems[0]).innerHeight());
-                    $(scrollbarElems[1]).mCustomScrollbar("update");
-                }
+                showPageByIndex(1);
             });
 
             //aside-menu click
             $('.aside-menu li').click(function () {
-                console.log($(this).attr('data-id'));
+                showDialogByID($(this).attr('data-id'),$(this).find('dd:last').attr('title'));
             });
         });
         //resize headerTitle size
@@ -320,21 +307,29 @@
         }
         //resize #content size
         function resizeContentSize(windowWidth) {
-            if (windowWidth > pcScreenMinWidth) {
+            if (windowWidth >= pcScreenMinWidth) {
+                //#content宽度部分
                 var contentHeight = $(window).innerHeight() - $('header').outerHeight() - $('footer').outerHeight();
                 $('#content').css({
                     'height': contentHeight,
                     'max-height': contentHeight,
-                    'opcacity': 0,
                 });
                 var contentWidth = $('#content').innerWidth() - $(scrollbarElems[0]).css('width', 'auto').outerWidth();
                 $(scrollbarElems[1]).animate({
                     'width': contentWidth,
                     'max-width': contentWidth,
                 });
+                //滚动条部分
                 for (var elems in scrollbarElems) {
                     $(scrollbarElems[elems]).mCustomScrollbar(scrollbarStyle);
                     $(scrollbarElems[elems]).mCustomScrollbar("update");
+                }
+                //全屏时mainTitle不显示‘目录’
+                if ($(scrollbarElems[0]).hasClass('aside-show')) {
+                    for (var i=0,elem; (elem = scrollbarElems[i]) != null; i++) {
+                        $(elem).removeClass('aside-show');
+                    }
+                    setMainTitle();
                 }
             } else {
                 //恢复
@@ -350,17 +345,113 @@
                     'width': 'auto',
                     'max-width': windowWidth,
                 }).mCustomScrollbar("destroy");
-                
+
+            }
+        }
+        //设置显示的标题
+        function setMainTitle(displayTitleID) {
+            //要求显示的存在
+            var $mainTitle=$('#mainTitle');
+            $('span',$mainTitle).css('display', 'none');
+            if (!!displayTitleID) {
+                $(displayTitleID, $mainTitle).css('display', '');
+            } else if ($(scrollbarElems[0]).hasClass('aside-show')) {
+                $('#asideMenuTitle').css('display', '');
+            } else {
+                $pagedefault = $(pageElems[0]);
+                for (var i = 1, pageName; (pageName = pageElems[i]) != null; i++) {
+                    if ($pagedefault.hasClass(pageName.substring(1) + '-show')) {
+                        $(pageName + 'Title').css('display', '');
+                        return;
+                    }
+                }
+                $(pageElems[0] + 'Title').css('display', '');
+            }
+        }
+        //错误提示
+        function showError(msg) {
+            alert(msg);
+        }
+        //显示对话框
+        function showDialogByID(writerID,topicTitle) {
+            if (!writerID) {
+                showError('0x003无来信者ID');
+            } else {
+                /*清空dialogPage*/
+
+                /*ajax dialog数据*/
+                /*显示dialogPage*/
+                showPageByIndex(2);
+                $(pageElems[2] + 'Title').text(topicTitle);
+            }
+        }
+        function showPageByIndex(index) {
+            if (!index || index < 0 || index >= pageElems.length) {
+                showError('0x004显示子页面索引错误');
+            } else {
+                var i = 0, elem,
+                    showClass = pageElems[index].substring(1) + '-show',
+                removeClass = (pageElems[pageElems.length - index].substring(1) || '')+'-show';
+                //窄屏下隐藏aside
+                for (; (elem = scrollbarElems[i]) != null; i++) {
+                    $(elem).removeClass('aside-show');
+                }
+                //显示或隐藏目录
+                //console.log(index, showClass, removeClass);
+                if (index === 1 && $(pageElems[index]).hasClass(showClass)) {
+                    for (i = 0; (elem = pageElems[i]) != null; i++) {
+                        $(elem).removeClass(showClass);
+                    }
+                    setMainTitle();
+                    $('.bg-div').removeClass('deeper');
+                } else {
+                    for (i = 0; (elem = pageElems[i]) != null; i++) {
+                        $(elem).removeClass(removeClass).addClass(showClass);
+                    }
+                    setMainTitle(pageElems[index] + 'Title');
+                    $('.bg-div').addClass('deeper');
+                }
+                if (isPcScreen) {
+                    $(scrollbarElems[1]).mCustomScrollbar("update");
+                }
             }
         }
     </script>
     <script>
         //ajax部分
+        var errorTips='<span class="error">*必须填写</span>'
         $(function () {
+            //点击添加按钮
+            $('#addPageBtn').click(function () {
+                var $addPageBtn = $(this),
+                    $addPageForm = $('#addPageForm');
+                $addPageBtn.attr('disabled', 'disabled');
 
+                if ($.checkFormRequired($addPageForm)) {
+                    //必填的部分已经全部填完
+                    $.ajax({
+                        cache: true,
+                        type: 'POST',
+                        url: 'ajax/addTopic.asp',
+                        data: $addPageForm.serialize(),
+                    }).done(function (data) {
+                        writer = $.parseJSON(data);
+                        //显示以writerID为首的对话框
+                        if (writer.writerID != -1) {
+                            showDialogByID(writer.writerID);
+                            $(this).removeAttr('disabled');
+                        } else {
+                            showError('0x001添加失败,无法写入数据库');
+                        }
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        showError('0x002添加失败，ajax失败'+textStatus)
+                        $(this).removeAttr('disabled');
+                    });
+                } else {
+                    $addPageBtn.removeAttr('disabled');
+                }
+            });
         });
     </script>
-
-
 </body>
 </html>
