@@ -14,8 +14,12 @@ body {
     cursor: default;
     zoom: 1;
     -webkit-tap-highlight-color: transparent; /*iPhone去除点击时的阴影*/
+    opacity:0;
 }
-
+input, select, textarea {
+    -ms-user-select:text;
+    ime-mode:active;
+}
 a {
     margin: 0;
     padding: 0;
@@ -447,9 +451,10 @@ footer {
         filter: blur(3px);
         /*    background-image:url('blur.svg');*/
         text-align: center;
-        transition: -ms-filter linear .5s;
-        -webkit-transition: -webkit-filter linear .5s;
-        -moz-transition: -moz-filter linear .5s;
+        transition: -ms-filter linear .4s;
+        -webkit-transition: -webkit-filter linear .4s;
+        -moz-transition: -moz-filter linear .4s;
+        opacity:0;
     }
 
         .bg-div.deeper {
@@ -534,6 +539,7 @@ footer {
 
     #defaultPage {
         color: rgba(0,0,0,.7);
+        left: 0;
     }
 
     #defaultPage,
@@ -547,24 +553,28 @@ footer {
         max-height: 100%;
         max-width: 100%;
         top: 0;
-        left: 0;
         transition: left linear .5s;
+        -webkit-transition:left linear .4s;
     }
 
         #defaultPage,
         #addPage.addPage-show,
         #dialogPage.dialogPage-show {
             left: 0;
+            display:block;
         }
 
             #defaultPage.addPage-show,
-            #defaultPage.dialogPage-show {
+            #addPage.dialogPage-show {
                 display: block;
                 left: -100%;
             }
+            #defaultPage.dialogPage-show {
+                display: block;
+                left: -200%;
+            }
 
-        #addPage,
-        #addPage.dialogPage-show {
+        #addPage{
             display: block;
             left: 100%;
         }

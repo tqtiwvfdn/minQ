@@ -16,13 +16,16 @@
     <link rel="Shortcut Icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <script>
-        //console.log(window.screen.logicalXDPI);
-        //console.log(window.screen.logicalYDPI);
-        //
-        //console.log(window.screen.availHeight+','+window.screen.availWidth);
+        function queryString(name) {
+            var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return null;
+        }
+        var imagesCounts = 389,
+            hsl = queryString('hsl') || document.location.replace('?hsl=' + parseInt(Math.random() * 361, 0) + '&bgi=' + parseInt(Math.random() * imagesCounts + 1, 0));
         //判断屏幕大小
-        var pcScreenMinWidth = 800, isPcScreen = false;
-        if (window.screen.availWidth >= pcScreenMinWidth) {
+        var pcScreenMinWidth = 800, isPcScreen = false, isNotInputFocus = true;
+        if (window.screen.availWidth >= pcScreenMinWidth || window.screen.availHeight >= pcScreenMinWidth) {
             document.write('<link href=\"common\/jquery.mCustomScrollbar.min.css\" rel=\"stylesheet\" \/>');
             isPcScreen = true;
         }
@@ -30,7 +33,7 @@
     <link href="common/style.css" rel="stylesheet" />
     <title>解忧集 | 祥琳健尚-望晴-望晴2_UI-雯晴|minQ</title>
 </head>
-<body style="opacity:0">
+<body>
     <div class="bg-div">
         <canvas id="bgCanvas" style="display:none;"></canvas>
     </div>
@@ -52,7 +55,7 @@
     </header>
     <div id="content" data-role="content">
         <aside class="aside">
-            <ol class="aside-menu" id="asideMenu">
+            <ol class="aside-menu no-select" id="asideMenu">
                 <li class="no-topic-title" data-id="-1">暂无来信者</li>
             </ol>
         </aside>
@@ -145,7 +148,7 @@
         if (window.navigator.msPointerEnabled) {
             scrollbarStyle.theme = 'light-2';
         }
-        var imagesCounts = 389, backgroundImage, bgImage = new Image(),isNotSupportFilter;
+        var backgroundImage, bgImage = new Image(),isNotSupportFilter;
         if (isPcScreen) {
             //预加载图片
             var $bgDiv = $('.bg-div');
@@ -190,7 +193,11 @@
                         }, 800);
                     }
                     backgroundImage = 'url(\'' + backgroundImage + '\')';
-                    $bgDiv.css('background-image', backgroundImage);
+                    $bgDiv.css({
+                        'background-image': backgroundImage,
+                    }).animate({
+                        'opacity': 1
+                    });
                 };
             }
             //PC屏幕大小下加载滚动条插件
@@ -199,7 +206,7 @@
 
         //onLoad & Listener
         $(function () {
-            var hsl, hslp, isMainTitleHidden;
+            var hslp, isMainTitleHidden;
             /*修复inline-block空隙 Start*/
             $('.header-titles').contents().filter(function () {
                 return this.nodeType === 3;
@@ -210,7 +217,7 @@
             /*修复inline-block空隙 End*/
             /*设置header背景色 Start*/
             //$('body').hide();
-            hsl = $.queryString('hsl') || document.location.replace('?hsl=' + parseInt(Math.random() * 361, 0) + '&bgi=' + parseInt(Math.random() * imagesCounts + 1, 0));
+            //hsl = $.queryString('hsl') || document.location.replace('?hsl=' + parseInt(Math.random() * 361, 0) + '&bgi=' + parseInt(Math.random() * imagesCounts + 1, 0));
             //hsl = parseInt(Math.random() * 360, 0);
             hslp = 30;
             $('.header-titles li.title:not(:last)').each(function () {
@@ -312,12 +319,23 @@
             $('#BtnAdd').click(function () {
                 showPageByIndex(1);
             });
-
+            //用于触屏效果下的软键盘导致resize的补丁
+            $(':input:not(button)').focus(function () {
+                isNotInputFocus = false;
+               // alert(isNotInputFocus);
+            }).blur(function () {
+                isNotInputFocus = true;
+               // alert(isNotInputFocus);
+            });
             //aside-menu click
             $('.aside-menu').click(function (e) {
                 var $writerElem = $($(e.target || window.event.srcElement).closest('li'));
                 if (!!$writerElem.length) {
-                    showDialogByID($writerElem.attr('data-id'), $writerElem.find('dd:last').attr('title'));
+                    showDialogByID($writerElem.attr('data-id'),
+                        '第' + ($writerElem.index() + 1) + '位：' + $writerElem.find('dd:last').attr('title'));
+                    if(isPcScreen){
+                        $(contentElems[0]).mCustomScrollbar('scrollTo',$writerElem);
+                    }
                 }
             });
         });
@@ -328,47 +346,49 @@
         }
         //resize #content size
         function resizeContentSize(windowWidth) {
-            if (windowWidth >= pcScreenMinWidth) {
-                //#content宽度部分
-                var contentHeight = $(window).innerHeight() - $('header').outerHeight() - $('footer').outerHeight();
-                $('#content').css({
-                    'height': contentHeight,
-                    'max-height': contentHeight,
-                });
+            if (isNotInputFocus) {
+                if (windowWidth >= pcScreenMinWidth) {
+                    //#content宽度部分
+                    var contentHeight = $(window).innerHeight() - $('header').outerHeight() - $('footer').outerHeight();
+                    $('#content').css({
+                        'height': contentHeight,
+                        'max-height': contentHeight,
+                    });
 
-                var contentWidth = $('#content').innerWidth() - $(contentElems[0]).css('width', 'auto').outerWidth();
-                $(contentElems[1]).animate({
-                    'width': contentWidth,
-                    'max-width': contentWidth,
-                });
-                //滚动条部分
-                for (var elems in scrollbarElems) {
-                    $(scrollbarElems[elems]).mCustomScrollbar(scrollbarStyle);
-                    $(scrollbarElems[elems]).mCustomScrollbar("update");
-                }
-                //全屏时mainTitle不显示‘目录’
-                if ($(contentElems[0]).hasClass('aside-show')) {
-                    setMainTitle();
-                }
-            } else {
-                //恢复
-                $('#content').css({
-                    'height': 'auto',
-                    'max-height': '100%',
-                });
+                    var contentWidth = $('#content').innerWidth() - $(contentElems[0]).css('width', 'auto').outerWidth();
+                    $(contentElems[1]).animate({
+                        'width': contentWidth,
+                        'max-width': contentWidth,
+                    });
+                    //滚动条部分
+                    for (var elems in scrollbarElems) {
+                        $(scrollbarElems[elems]).mCustomScrollbar(scrollbarStyle);
+                        $(scrollbarElems[elems]).mCustomScrollbar("update");
+                    }
+                    //全屏时mainTitle不显示‘目录’
+                    if ($(contentElems[0]).hasClass('aside-show')) {
+                        setMainTitle();
+                    }
+                } else {
+                    //恢复
+                    $('#content').css({
+                        'height': 'auto',
+                        'max-height': '100%',
+                    });
 
-                $(contentElems[1]).css({
-                    'width': 'auto',
-                    'max-width': windowWidth,
-                });
-                for (var i = 0, elem; (elem = scrollbarElems[i]) != null; i++) {
-                    $(elem).css({
+                    $(contentElems[1]).css({
                         'width': 'auto',
-                        'max-width': 'auto',
-                    }).mCustomScrollbar("destroy");
-                }
-                if ($(contentElems[0]).hasClass('aside-show')) {
-                    setMainTitle('#asideMenuTitle');
+                        'max-width': windowWidth,
+                    });
+                    for (var i = 0, elem; (elem = scrollbarElems[i]) != null; i++) {
+                        $(elem).css({
+                            'width': 'auto',
+                            'max-width': 'auto',
+                        }).mCustomScrollbar("destroy");
+                    }
+                    if ($(contentElems[0]).hasClass('aside-show')) {
+                        setMainTitle('#asideMenuTitle');
+                    }
                 }
             }
         }
@@ -394,7 +414,7 @@
         }
         //错误提示
         function showError(msg) {
-            alert(msg);
+            console.log(msg);
         }
         //显示对话框
         function showDialogByID(writerID,topicTitle) {
@@ -445,7 +465,7 @@
             }
         }
         //添加主题到菜单
-        function addWriterInfoMenu(writerInfo) {
+        function addWriterInfoMenu(writerInfo,isNotUpdate,isNotScrollToButtom) {
             var topicTitleTemp = $('ol', $('#topicTitleTemp')).html(),
                 $asideMenu = $('#asideMenu');
             $asideMenu.children('.no-topic-title').remove()
@@ -465,7 +485,12 @@
                 .replace(/topicTitle/g,writerInfo.topicTitle)
                 .replace(/listIndex/g, $asideMenu.children().length + 1);
             $asideMenu.append(topicTitleTemp);
-            $(scrollbarElems[0]).mCustomScrollbar("update");
+            if (!isNotUpdate && isPcScreen) {
+                $(scrollbarElems[0]).mCustomScrollbar("update");
+            }
+            if (!isNotScrollToButtom && isPcScreen) {
+                $(scrollbarElems[0]).mCustomScrollbar('scrollTo', ['bottom', null]);
+            }
             //console.log(topicTitleTemp);
         }
     </script>
@@ -473,6 +498,22 @@
         //ajax部分
         var errorTips='<span class="error">*必须填写</span>'
         $(function () {
+            $.ajax({
+                cache: false,
+                type: 'Get',
+                url: 'ajax/getTopicTitle.asp',
+                data:'writerID='+($.queryString('writerID')||''),
+            }).done(function (data) {
+                var writers = eval(data);
+                //console.log(data);
+                if (writers.length > 1) {
+                    for (var i = 0; i < writers.length - 2; i++) {
+                        addWriterInfoMenu(writers[i],true,true);
+                    }
+                    addWriterInfoMenu(writers[i],false,true);
+                }
+            }).fail(ajaxFail);
+
             //点击添加按钮
             $('#addPageBtn').click(function () {
                 var $addPageBtn = $(this),
@@ -493,12 +534,13 @@
                             $addPageBtn.removeAttr('disabled');
                             //将整个添加来信者queryString转成json对象添加到asideMenu中
                             addWriterInfoMenu($.queryStringToJson($addPageForm.serialize().replace(/\+/g, '') + '&writerID=' + writer.writerID));
-                            showDialogByID(writer.writerID, $addPageForm.find('#topicTitle').val());
+                            showDialogByID(writer.writerID, '新增：' + $addPageForm.find('#topicTitle').val());
+                            $(":input",$addPageForm).not(":button, :submit, :reset, :hidden").val("").removeAttr("checked").remove("selected");
                         } else {
                             showError('0x001添加失败,无法写入数据库');
                         }
                     }).fail(function (jqXHR, textStatus, errorThrown) {
-                        showError('0x002添加失败，ajax失败'+textStatus)
+                        ajaxFail(jqXHR, textStatus+'addBtn', errorThrown);
                         $addPageBtn.removeAttr('disabled');
                     });
                 } else {
@@ -506,6 +548,9 @@
                 }
             });
         });
+        function ajaxFail(jqXHR, textStatus, errorThrown) {
+            showError('0x002添加失败，ajax失败' + textStatus);
+        }
     </script>
 </body>
 </html>
