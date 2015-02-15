@@ -25,7 +25,7 @@
             hsl = queryString('hsl') || document.location.replace('?hsl=' + parseInt(Math.random() * 361, 0) + '&bgi=' + parseInt(Math.random() * imagesCounts + 1, 0));
         //判断屏幕大小
         var pcScreenMinWidth = 800, isPcScreen = false, isNotInputFocus = true;
-        if (window.screen.availWidth >= pcScreenMinWidth || window.screen.availHeight >= pcScreenMinWidth) {
+        if (window.screen.availWidth >= pcScreenMinWidth || window.screen.availHeight  >= pcScreenMinWidth*1.1) {
             document.write('<link href=\"common\/jquery.mCustomScrollbar.min.css\" rel=\"stylesheet\" \/>');
             isPcScreen = true;
         }
@@ -34,9 +34,11 @@
     <title>解忧集 | 祥琳健尚-望晴-望晴2_UI-雯晴|minQ</title>
 </head>
 <body>
+    <!--背景 Start-->
     <div class="bg-div">
         <canvas id="bgCanvas" style="display:none;"></canvas>
     </div>
+    <!--背景 End-->
     <header data-role="header" class="header">
         <ul class="header-titles no-select">
             <li class="title"><a href="/">祥琳健尚</a></li>
@@ -54,60 +56,97 @@
         </ul>
     </header>
     <div id="content" data-role="content">
-        <aside class="aside">
+        <aside class="aside" id="aside">
             <ol class="aside-menu no-select" id="asideMenu">
                 <li class="no-topic-title" data-id="-1">暂无来信者</li>
             </ol>
         </aside>
-        <article class="article">
-                <!--主页 start-->
-                <div id="defaultPage">
-                    <div class="default-page-title no-select title">解<br />忧<br />集</div>
-                    <p class="default-page-sub-title no-select">祥琳健尚&nbsp;希璇文学库</p>
-                    <p class="default-page-sub-title no-select">二〇一四甲午年&nbsp;八月</p>
+        <article class="article" id="article">
+            <!--主页 start-->
+            <div id="defaultPage">
+                <div class="default-page-title no-select title">解<br />忧<br />集</div>
+                <p class="default-page-sub-title no-select">祥琳健尚&nbsp;希璇文学库</p>
+                <p class="default-page-sub-title no-select">二〇一四甲午年&nbsp;八月</p>
+            </div>
+            <!--主页 end-->
+            <!--添加来信者 start-->
+            <div id="addPage">
+                <form id="addPageForm" method="post">
+                    <h4 class="writer-info-input-title">基本信息</h4>
+                    <ol class="writer-info-input-list">
+                        <li>
+                            <label class="writer-info-input-label">姓名</label>
+                            <input type="text" required="required" name="writerName" id="writerName" placeholder="姓名" value="" tabindex="1" class="writer-info-inputer" />
+                        </li>
+                        <li>
+                            <label class="writer-info-input-label">性别</label>
+                            <select id="writerIsMan" name="writerIsMan" class="writer-info-inputer" required="required" tabindex="2">
+                                <option disabled="disabled" value="" selected="selected">请选择…</option>
+                                <option value="0">男</option>
+                                <option value="1">女</option>
+                                <option value="2">未知</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label class="writer-info-input-label">地区</label>
+                            <input type="text" name="writerArea" id="writerArea" placeholder="地区" value="" class="writer-info-inputer" required="required" tabindex="3" />
+                        </li>
+                    </ol>
+                    <hr class="writer-info-input-hr" />
+                    <h4 class="writer-info-input-title">主题</h4>
+                    <ol class="writer-info-input-list">
+                        <li>
+                            <label class="writer-info-input-label">主题</label>
+                            <input type="text" name="topicTitle" id="topicTitle" placeholder="主题" value="" class="writer-info-inputer" required="required" tabindex="4" />
+                        </li>
+                    </ol>
+                    <div class="writer-info-input-btn-group">
+                        <button class="writer-info-input-btn btn" type="button" id="addPageBtn" tabindex="5">添加</button>
+                    </div>
+                </form>
+            </div>
+            <!--添加来信者 end-->
+            <!--对话 start-->
+            <div id="dialogPage">
+                <div class="dialog-list-container" id="dialogListContainer">
+                    <ol id="dialogList" class="dialog-list">
+                        <li class="dialog-ask"></li>
+                        <li class="dialog-reply"></li>
+                    </ol>
                 </div>
-                <!--主页 end-->
-                <!--添加来信者 start-->
-                <div id="addPage">
-                    <form id="addPageForm" method="post" >
-                        <h4 class="writer-info-input-title">基本信息</h4>
-                        <ol class="writer-info-input-list">
+                <div class="content-area" id="contentArea">
+                    <form id="contentForm">
+                        <h4 class="content-area-title">抬头</h4>
+                        <ol class="content-area-list">
                             <li>
-                                <label class="writer-info-input-label">姓名</label>
-                                <input type="text" required="required" name="writerName" id="writerName" placeholder="姓名" value="" tabindex="1" class="writer-info-inputer" />
+                                <label class="content-area-label">时间</label>
+                                <input type="text" required="required" name="contentTime" id="contentName" placeholder="yyyy/mm/dd HH:MM" value="" tabindex="6" class="content-area-inputer" />
                             </li>
                             <li>
-                                <label class="writer-info-input-label">性别</label>
-                                <select id="writerIsMan" name="writerIsMan" class="writer-info-inputer" required="required" tabindex="2">
+                                <label class="content-area-label">来往</label>
+                                <select id="contentIsReply" name="contentIsReply" class="content-area-inputer" required="required" tabindex="7">
                                     <option disabled="disabled" value="" selected="selected">请选择…</option>
-                                    <option value="0">男</option>
-                                    <option value="1">女</option>
-                                    <option value="2">未知</option>
+                                    <option value="false">来信</option>
+                                    <option value="true">回信</option>
                                 </select>
                             </li>
+                        </ol>
+                        <h4 class="content-area-title">内容</h4>
+                        <ol class="content-area-list">
                             <li>
-                                <label class="writer-info-input-label">地区</label>
-                                <input type="text" name="writerArea" id="writerArea" placeholder="地区" value="" class="writer-info-inputer" required="required" tabindex="3" />
+                                <label class="content-area-label">内容</label>
+                                <textarea id="contentAreaContent" name="contentAreaContent" required="required" class="content-area-inputer" tabindex="8" placeholder="输入内容…"></textarea>
                             </li>
                         </ol>
-                        <hr class="writer-info-input-hr" />
-                        <h4 class="writer-info-input-title">主题</h4>
-                        <ol class="writer-info-input-list">
-                            <li>
-                                <label class="writer-info-input-label">主题</label>
-                                <input type="text" name="topicTitle" id="topicTitle" placeholder="主题" value="" class="writer-info-inputer" required="required" tabindex="4" />
-                            </li>
-                        </ol>
-                        <div class="writer-info-input-btn-group">
-                            <button class="writer-info-input-btn btn" type="button" id="addPageBtn" tabindex="5">添加</button>
+                        <div class="content-area-btn-group">
+                            <input type="file" hidden="hidden">
+                            <button class="btn content-area-img-btn" type="button" id="contentAreaImgBtn" tabindex="9">&Xi;<span class="info-name">&nbsp;图片</span></button>
+                            <button class="btn content-area-btn" type="button" id="contentAreaBtn" tabindex="10">输入</button>
                         </div>
                     </form>
                 </div>
-                <!--添加来信者 end-->
-                <!--对话 start-->
-                <div id="dialogPage">
-                </div>
-                <!--对话 end-->
+            </div>
+            <!--对话 end-->
         </article>
     </div>
     <footer data-role="footer">
@@ -136,73 +175,83 @@
     <script src="common/jquery-1.11.2.js"></script>
     <script src="common/stackBlur.min.js"></script>
     <script type='text/javascript'>
+        /*初始化全局变量*/
         var titleWidths = new Array();
-        var contentElems = ['.aside', '.article'],
+        var contentElems = ['#aside', '#article'],
             scrollbarStyle = {
                 axis: "y",
                 scrollButtons: { enable: false },
                 theme: "rounded",
             },
             pageElems = ['#defaultPage', '#addPage', '#dialogPage'],
-            scrollbarElems = [contentElems[0]].concat(pageElems);
+            scrollbarElems = ['#aside', '#defaultPage', '#addPage'];
         if (window.navigator.msPointerEnabled) {
             scrollbarStyle.theme = 'light-2';
         }
-        var backgroundImage, bgImage = new Image(),isNotSupportFilter;
-        if (isPcScreen) {
+        var backgroundImage, bgImage = new Image(), isNotSupportFilter;
+        /*PC端初始化函数*/
+            //alert('isPc');
             //预加载图片
             var $bgDiv = $('.bg-div');
-            isNotSupportFilter = !($bgDiv.css('-webkit-filter') || $bgDiv.css('-ms-filter') || $bgDiv.css('-moz-filter') || $bgDiv.css('filter') !== 'none');
-            if (isNotSupportFilter && !document.getElementById('bgCanvas').style.display) {
-                $bgDiv.css('background-image', "url('blur.svg')");
-            } else {
+              isNotSupportFilter = !($bgDiv.css('-webkit-filter') || $bgDiv.css('-ms-filter') || $bgDiv.css('-moz-filter') || $bgDiv.css('filter') !== 'none');
+           // if (isNotSupportFilter && !document.getElementById('bgCanvas').style.display) {
+           //     $bgDiv.css('background-image', "url('blur.svg')");
+           // } else {
                 backgroundImage = document.location.pathname + 'images/%20%28' + ($.queryString('bgi') || parseInt(Math.random() * imagesCounts + 1, 0)) + '%29.jpg';
                 bgImage.src = backgroundImage;
                 bgImage.onload = function () {
                     if (isNotSupportFilter) {
-                        //IE11不支持滤镜补丁
-                        var bgImgElem = document.createElement('img');
-                        bgImgElem.src = backgroundImage;
-                        bgImgElem.id = 'bgImg';
-                        bgImgElem.style.display = 'none';
-                        document.body.appendChild(bgImgElem);
-                        setTimeout(function () {
-                            stackBlurImage("bgImg", 'bgCanvas', 6, true);
-                            var $bgCanvas = $('#bgCanvas'),
-                                bgCanvasWidth = $bgCanvas.width(),
-                                bgCanvasProportion = (bgCanvasWidth / $bgCanvas.height()).toFixed(2);
-                            $bgCanvas.css({
-                                'height': '100%',
-                                'width': 'auto',
-                            }).fadeIn(500);
-                            //IE10不支持width=auto start
-                            if (bgCanvasProportion !== ($bgCanvas.width() / $bgCanvas.height()).toFixed(2)) {
-                             //   alert('not-fixed');
-                                $bgCanvas.css({
-                                    'width': bgCanvasProportion*$bgCanvas.height()
-                                });
-                            }
-                            $(window).resize(function () {
-                                if (isPcScreen && isNotSupportFilter && $(this).width() >= pcScreenMinWidth) {
-                                    $bgCanvas.css({
-                                        'width': bgCanvasProportion * $bgCanvas.height()
-                                    });
-                                }
-                            });
-                            //IE10不支持width=auto end
-                        }, 800);
+                   //     //alert('ie');
+                   //     //IE11不支持滤镜补丁
+                   //     var bgImgElem = document.createElement('img');
+                   //     bgImgElem.src = backgroundImage;
+                   //     bgImgElem.id = 'bgImg';
+                   //     bgImgElem.style.display = 'none';
+                   //     document.body.appendChild(bgImgElem);
+                   //     setTimeout(function () {
+                   //         stackBlurImage("bgImg", 'bgCanvas', 6, true);
+                   //         var $bgCanvas = $('#bgCanvas'),
+                   //             bgCanvasWidth = $bgCanvas.width(),
+                   //             bgCanvasProportion = (bgCanvasWidth / $bgCanvas.height()).toFixed(2);
+                   //         $bgCanvas.css({
+                   //             'height': '100%',
+                   //             'width': 'auto',
+                   //         }).fadeIn(500);
+                   //         //IE10不支持width=auto start
+                   //         if (bgCanvasProportion !== ($bgCanvas.width() / $bgCanvas.height()).toFixed(2)) {
+                   //          //   alert('not-fixed');
+                   //             $bgCanvas.css({
+                   //                 'width': bgCanvasProportion*$bgCanvas.height()
+                   //             });
+                   //         }
+                   //         $(window).resize(function () {
+                   //             if (isPcScreen && isNotSupportFilter && $(this).width() >= pcScreenMinWidth) {
+                   //                 $bgCanvas.css({
+                   //                     'width': bgCanvasProportion * $bgCanvas.height()
+                   //                 });
+                   //             }
+                   //         });
+                   //         //IE10不支持width=auto end
+                        //     }, 800);
+                        $bgDiv.addClass('opacity');
                     }
                     backgroundImage = 'url(\'' + backgroundImage + '\')';
                     $bgDiv.css({
                         'background-image': backgroundImage,
                     }).animate({
                         'opacity': 1
+                    }, function () {
+                        if (isNotSupportFilter) {
+                            $bgDiv.css('opacity', '');
+                        }
                     });
                 };
+            //}
+            if (isPcScreen) {
+
+                //PC屏幕大小下加载滚动条插件
+                document.write('<script src=\"common\/jquery.mCustomScrollbar.concat.min.js\"><\/script>');
             }
-            //PC屏幕大小下加载滚动条插件
-            document.write('<script src=\"common\/jquery.mCustomScrollbar.concat.min.js\"><\/script>');
-        }
 
         //onLoad & Listener
         $(function () {
@@ -427,10 +476,14 @@
                 showError('0x003无来信者ID');
             } else {
                 /*清空dialogPage*/
-
+                $('#dialogList').empty().append(dialogDefaultTips);
                 /*ajax dialog数据*/
+                //console.log($(window).innerHeight());
+                //console.log($('header').outerHeight());
+                //console.log($('footer').outerHeight());
+                //$('#dialogListContainer').css('height',$('#dialogPage').innerHeight() - $('#contentArea').outerHeight());
+                
                 /*显示dialogPage*/
-                //console.log(topicTitle);
                 showPageByIndex(2);
                 $(pageElems[2] + 'Title').text(topicTitle);
             }
@@ -507,7 +560,9 @@
     </script>
     <script>
         //ajax部分
-        var errorTips='<span class="error">*必须填写</span>'
+        var errorTips = '<span class="error">*必须填写</span>',
+            dialogDefaultTips = '<li class="dialog-tips">暂无信息</li>';
+        //加载asideMenu
         $(function () {
             $.ajax({
                 cache: false,
@@ -559,6 +614,7 @@
                 }
             });
         });
+        //ajaxFail抽象函数
         function ajaxFail(jqXHR, textStatus, errorThrown) {
             showError('0x002添加失败，ajax失败' + textStatus);
         }

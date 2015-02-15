@@ -10419,19 +10419,19 @@ jQuery.fn.extend({
         $elem.css(targetCSS, hsl);
         var css = $elem.css(targetCSS);
         css = css.replace('rgb', 'rgba').replace(')', ',' + opacity + ')');
-        if (jQuery.support.opacity && $(window).width() >= pcScreenMinWidth) {
+        if (jQuery.support.opacity /*&& $(window).width() >= pcScreenMinWidth*/) {
             $elem.css(targetCSS, css);
         }
         /*统一窄屏下无透明*/
-        if (isPcScreen) {
-            $(window).resize(function () {
-                if ($(this).width() < pcScreenMinWidth) {
-                    $elem.css(targetCSS, hsl);
-                } else {
-                    $elem.css(targetCSS, css);
-                }
-            });
-        }
+        //if (isPcScreen) {
+        //    $(window).resize(function () {
+        //        if ($(this).width() < pcScreenMinWidth) {
+        //            $elem.css(targetCSS, hsl);
+        //        } else {
+        //            $elem.css(targetCSS, css);
+        //        }
+        //    });
+        //}
         return $elem;
     }
 });

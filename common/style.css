@@ -2,6 +2,7 @@
 html {
     font-size: 16px;
     -ms-overflow-style: -ms-autohiding-scrollbar;
+    zoom:1;
 }
 
 body {
@@ -14,11 +15,17 @@ body {
     cursor: default;
     zoom: 1;
     -webkit-tap-highlight-color: transparent; /*iPhone去除点击时的阴影*/
+        -webkit-appearance:none;
     opacity:0;
+}
+ol, ul {
+    list-style:none;
 }
 input, select, textarea {
     -ms-user-select:text;
     ime-mode:active;
+    zoom:1;
+        -webkit-appearance:none;
 }
 a {
     margin: 0;
@@ -80,11 +87,49 @@ a {
         color: #CCC;
         opacity: 1;
     }
-/*bg*/
-.bg-div {
-    display: none;
+    /*bg*/
+    .bg-div {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -2;
+        background-position: top center;
+        background-repeat: repeat;
+        background-size: cover;
+        background-size: auto 100%;
+        height: 100%;
+        width: 100%;
+        max-height: 100%;
+        max-width: 100%;
+        overflow: hidden;
+        -webkit-filter: blur(1px); /* Chrome, Opera */
+        -moz-filter: blur(3px);
+        -ms-filter: 'alpha(opacity=50)';
+        filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=3, MakeShadow=false);
+        /* filter:url('blur.svg');*/
+        filter: blur(3px);
+        /*    background-image:url('blur.svg');*/
+        text-align: center;
+        transition: -ms-filter,opacity linear .4s;
+        -webkit-transition: -webkit-filter linear .4s;
+        -moz-transition: -moz-filter linear .4s;
+        opacity:0;
+    }
+
+        .bg-div.deeper {
+            -webkit-filter: blur(10px); /* Chrome, Opera */
+            -moz-filter: blur(10px);
+            -ms-filter: 'alpha(opacity=30)';
+            filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=10, MakeShadow=false);
+            filter: blur(10px);
+        }/*header*/
+.opacity {
+    opacity:.8;
 }
-/*header*/
+    .opacity.deeper {
+        opacity:.2;
+    }
 .header {
     position: fixed;
     display: none;
@@ -97,7 +142,6 @@ a {
 }
 
 .header-titles {
-    list-style: none;
     margin: 0;
     padding: 0;
     font-size: 0;
@@ -156,7 +200,6 @@ a {
 .aside-menu {
     margin: 0;
     padding: .5em 1.5em;
-    list-style: none;
     font-size: 1rem;
 }
 
@@ -264,7 +307,8 @@ a {
 }
 /*addPage*/
 
-.writer-info-input-title {
+.writer-info-input-title,
+.content-area-title {
     padding: .5em 1em;
     margin: 0;
     font-weight: normal;
@@ -273,23 +317,28 @@ a {
     overflow: hidden;
 }
 
-.writer-info-input-list {
+.writer-info-input-list,
+.content-area-list {
     margin: 0;
     padding: .5em 1.5em;
-    list-style: none;
     font-size: 1rem;
 }
-
-.writer-info-input-label {
+.writer-info-input-list>li,
+.content-area-list>li {
+    display:block;
+}
+.writer-info-input-label,
+.content-area-label {
     padding: .25em .5em;
     display:block;
 }
 
-.writer-info-inputer {
+.writer-info-inputer,
+.content-area-inputer {
     display: block;
-    min-width: 100%;
+    min-width: 85%;
     width: 8rem;
-    max-width: 100%;
+    max-width: 85%;
     background-color: transparent;
     overflow: hidden;
     margin: .25em 0;
@@ -298,6 +347,7 @@ a {
     font-size: .85rem;
     border: none;
     outline: 0;
+    resize:none;
 }
 
 .writer-info-input-hr {
@@ -307,18 +357,30 @@ a {
     border: 1px dashed rgba(255,255,255,.5);
 }
 
-.writer-info-input-btn-group {
+.writer-info-input-btn-group,
+.content-area-btn-group {
     font-size: 1rem;
-    padding: 1em 2em 0;
+    padding: 1em .5em 2em;
     text-align: right;
 }
 
-.writer-info-input-btn {
+.writer-info-input-btn,
+.content-area-img-btn,
+.content-area-btn {
     padding: .25em 1em;
     margin-bottom: 4em;
     border: 1px solid;
     font-size: 1rem;
     color: #3EC1FF;
+}
+/*dialog-page*/
+.dialog-list {
+    margin: 0;
+    padding: 1em;
+    font-size: 1rem;
+}
+.dialog-tips {
+    text-align:center;
 }
 /*content end*/
 footer {
@@ -367,6 +429,15 @@ footer {
 
     .info-name {
         display: inline;
+    }
+    .writer-info-inputer,
+    .content-area-inputer {
+        font-size:1.21rem;
+    }
+    .writer-info-input-btn,
+    .content-area-img-btn,
+    .content-area-btn {
+        font-size:1.3rem;
     }
     /*footer*/
     footer {
@@ -420,6 +491,15 @@ footer {
         font-size: 1.2rem;
         margin-top: .3em;
     }
+    .writer-info-inputer,
+    .content-area-inputer {
+        font-size: .85rem;
+    }
+    .writer-info-input-btn,
+    .content-area-img-btn,
+    .content-area-btn {
+        font-size: 1rem;
+    }
 }
 /*screen min-width=800px for PCs*/
 @media screen and (min-width:800px) {
@@ -428,43 +508,7 @@ footer {
         font-size: 16px;
         -ms-touch-action: none;
     }
-    /*bg*/
-    .bg-div {
-        display: block;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: -2;
-        background-position: top center;
-        background-repeat: repeat;
-        background-size: cover;
-        background-size: auto 100%;
-        height: 100%;
-        width: 100%;
-        max-height: 100%;
-        max-width: 100%;
-        overflow: hidden;
-        -webkit-filter: blur(1px); /* Chrome, Opera */
-        -moz-filter: blur(3px);
-        -ms-filter: 'alpha(opacity=50)';
-        filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=3, MakeShadow=false);
-        /* filter:url('blur.svg');*/
-        filter: blur(3px);
-        /*    background-image:url('blur.svg');*/
-        text-align: center;
-        transition: -ms-filter linear .4s;
-        -webkit-transition: -webkit-filter linear .4s;
-        -moz-transition: -moz-filter linear .4s;
-        opacity:0;
-    }
 
-        .bg-div.deeper {
-            -webkit-filter: blur(10px); /* Chrome, Opera */
-            -moz-filter: blur(10px);
-            -ms-filter: 'alpha(opacity=30)';
-            filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=10, MakeShadow=false);
-            filter: blur(10px);
-        }
 
     .opacity.deeper {
         opacity: .3;
@@ -555,7 +599,7 @@ footer {
         max-width: 100%;
         top: 0;
         transition: left linear .5s;
-        -webkit-transition:left linear .4s;
+        -webkit-transition:left linear .3s;
     }
 
         #defaultPage,
@@ -596,6 +640,13 @@ footer {
         line-height: 1.25em;
         font-size: 1.6rem;
     }
+    .dialog-page-content {
+        max-height:100%;
+        max-width:100%;
+        position:relative;
+        overflow:hidden;
+    }
+
     /*footer*/
     footer {
         margin: 0;
