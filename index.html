@@ -113,6 +113,7 @@
                         <li class="dialog-ask"></li>
                         <li class="dialog-reply"></li>
                     </ol>
+                    <hr class="content-area-hr" />
                 </div>
                 <div class="content-area" id="contentArea">
                     <form id="contentForm">
@@ -121,8 +122,6 @@
                             <li>
                                 <label class="content-area-label">时间</label>
                                 <input type="text" required="required" name="contentTime" id="contentName" placeholder="yyyy/mm/dd HH:MM" value="" tabindex="6" class="content-area-inputer" />
-                            </li>
-                            <li>
                                 <label class="content-area-label">来往</label>
                                 <select id="contentIsReply" name="contentIsReply" class="content-area-inputer" required="required" tabindex="7">
                                     <option disabled="disabled" value="" selected="selected">请选择…</option>
@@ -133,9 +132,9 @@
                         </ol>
                         <h4 class="content-area-title">内容</h4>
                         <ol class="content-area-list">
-                            <li>
-                                <label class="content-area-label">内容</label>
-                                <textarea id="contentAreaContent" name="contentAreaContent" required="required" class="content-area-inputer" tabindex="8" placeholder="输入内容…"></textarea>
+                            <li class="content-area-content-item">
+                                <label class="content-area-label content-area-content-label">内容</label>
+                                <textarea id="contentAreaContent" name="contentAreaContent" required="required" class="content-area-inputer content-area-textarea" tabindex="8" placeholder="输入内容…"></textarea>
                             </li>
                         </ol>
                         <div class="content-area-btn-group">
@@ -184,7 +183,7 @@
                 theme: "rounded",
             },
             pageElems = ['#defaultPage', '#addPage', '#dialogPage'],
-            scrollbarElems = ['#aside', '#defaultPage', '#addPage'];
+            scrollbarElems = ['#aside', '#defaultPage', '#addPage', '#dialogListContainer'];
         if (window.navigator.msPointerEnabled) {
             scrollbarStyle.theme = 'light-2';
         }
@@ -408,6 +407,11 @@
                         'width': contentWidth,
                         'max-width': contentWidth,
                     });
+                    setTimeout(function () {
+                        $('#dialogListContainer').animate({
+                            'height': $('#dialogPage').innerHeight() - $('#contentArea').outerHeight()
+                        }, 200);
+                    }, 500);
                     //滚动条部分
                     for (var elems in scrollbarElems) {
                         $(scrollbarElems[elems]).mCustomScrollbar(scrollbarStyle);
@@ -434,6 +438,9 @@
                             'max-width': 'auto',
                         }).mCustomScrollbar("destroy");
                     }
+                    $('#dialogListContainer').css({
+                        'height': 'auto'
+                    });
                     if ($(contentElems[0]).hasClass('aside-show')) {
                         setMainTitle('#asideMenuTitle');
                     }
@@ -475,8 +482,9 @@
                 //console.log($(window).innerHeight());
                 //console.log($('header').outerHeight());
                 //console.log($('footer').outerHeight());
-                //$('#dialogListContainer').css('height',$('#dialogPage').innerHeight() - $('#contentArea').outerHeight());
-                
+                if ($(window).width()>=pcScreenMinWidth) {
+                    $('#dialogListContainer').css('height', $('#dialogPage').innerHeight() - $('#contentArea').outerHeight());
+                }
                 /*显示dialogPage*/
                 showPageByIndex(2);
                 $(pageElems[2] + 'Title').text(topicTitle);
@@ -555,7 +563,7 @@
     <script>
         //ajax部分
         var errorTips = '<span class="error">*必须填写</span>',
-            dialogDefaultTips = '<li class="dialog-tips">暂无信息</li>';
+            dialogDefaultTips = '<li class="dialog-tips"><span>暂无信息</span></li>';
         //加载asideMenu
         $(function () {
             $.ajax({
