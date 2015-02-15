@@ -190,68 +190,62 @@
         }
         var backgroundImage, bgImage = new Image(), isNotSupportFilter;
         /*PC端初始化函数*/
+        if (isPcScreen) {
             //alert('isPc');
             //预加载图片
             var $bgDiv = $('.bg-div');
-              isNotSupportFilter = !($bgDiv.css('-webkit-filter') || $bgDiv.css('-ms-filter') || $bgDiv.css('-moz-filter') || $bgDiv.css('filter') !== 'none');
-           // if (isNotSupportFilter && !document.getElementById('bgCanvas').style.display) {
-           //     $bgDiv.css('background-image', "url('blur.svg')");
-           // } else {
+            isNotSupportFilter = !($bgDiv.css('-webkit-filter') || $bgDiv.css('-ms-filter') || $bgDiv.css('-moz-filter') || $bgDiv.css('filter') !== 'none');
+            if (isNotSupportFilter && !document.getElementById('bgCanvas').style.display) {
+                $bgDiv.css('background-image', "url('blur.svg')");
+            } else {
                 backgroundImage = document.location.pathname + 'images/%20%28' + ($.queryString('bgi') || parseInt(Math.random() * imagesCounts + 1, 0)) + '%29.jpg';
                 bgImage.src = backgroundImage;
                 bgImage.onload = function () {
                     if (isNotSupportFilter) {
-                   //     //alert('ie');
-                   //     //IE11不支持滤镜补丁
-                   //     var bgImgElem = document.createElement('img');
-                   //     bgImgElem.src = backgroundImage;
-                   //     bgImgElem.id = 'bgImg';
-                   //     bgImgElem.style.display = 'none';
-                   //     document.body.appendChild(bgImgElem);
-                   //     setTimeout(function () {
-                   //         stackBlurImage("bgImg", 'bgCanvas', 6, true);
-                   //         var $bgCanvas = $('#bgCanvas'),
-                   //             bgCanvasWidth = $bgCanvas.width(),
-                   //             bgCanvasProportion = (bgCanvasWidth / $bgCanvas.height()).toFixed(2);
-                   //         $bgCanvas.css({
-                   //             'height': '100%',
-                   //             'width': 'auto',
-                   //         }).fadeIn(500);
-                   //         //IE10不支持width=auto start
-                   //         if (bgCanvasProportion !== ($bgCanvas.width() / $bgCanvas.height()).toFixed(2)) {
-                   //          //   alert('not-fixed');
-                   //             $bgCanvas.css({
-                   //                 'width': bgCanvasProportion*$bgCanvas.height()
-                   //             });
-                   //         }
-                   //         $(window).resize(function () {
-                   //             if (isPcScreen && isNotSupportFilter && $(this).width() >= pcScreenMinWidth) {
-                   //                 $bgCanvas.css({
-                   //                     'width': bgCanvasProportion * $bgCanvas.height()
-                   //                 });
-                   //             }
-                   //         });
-                   //         //IE10不支持width=auto end
-                        //     }, 800);
-                        $bgDiv.addClass('opacity');
+                        //alert('ie');
+                        //IE11不支持滤镜补丁
+                        var bgImgElem = document.createElement('img');
+                        bgImgElem.src = backgroundImage;
+                        bgImgElem.id = 'bgImg';
+                        bgImgElem.style.display = 'none';
+                        document.body.appendChild(bgImgElem);
+                        setTimeout(function () {
+                            stackBlurImage("bgImg", 'bgCanvas', 6, true);
+                            var $bgCanvas = $('#bgCanvas'),
+                                bgCanvasWidth = $bgCanvas.width(),
+                                bgCanvasProportion = (bgCanvasWidth / $bgCanvas.height()).toFixed(2);
+                            $bgCanvas.css({
+                                'height': '100%',
+                                'width': 'auto',
+                            }).fadeIn(500);
+                            //IE10不支持width=auto start
+                            if (bgCanvasProportion !== ($bgCanvas.width() / $bgCanvas.height()).toFixed(2)) {
+                             //   alert('not-fixed');
+                                $bgCanvas.css({
+                                    'width': bgCanvasProportion*$bgCanvas.height()
+                                });
+                            }
+                            $(window).resize(function () {
+                                if (isPcScreen && isNotSupportFilter && $(this).width() >= pcScreenMinWidth) {
+                                    $bgCanvas.css({
+                                        'width': bgCanvasProportion * $bgCanvas.height()
+                                    });
+                                }
+                            });
+                            //IE10不支持width=auto end
+                        }, 800);
                     }
                     backgroundImage = 'url(\'' + backgroundImage + '\')';
                     $bgDiv.css({
                         'background-image': backgroundImage,
                     }).animate({
                         'opacity': 1
-                    }, function () {
-                        if (isNotSupportFilter) {
-                            $bgDiv.css('opacity', '');
-                        }
                     });
                 };
-            //}
-            if (isPcScreen) {
-
-                //PC屏幕大小下加载滚动条插件
-                document.write('<script src=\"common\/jquery.mCustomScrollbar.concat.min.js\"><\/script>');
             }
+            //PC屏幕大小下加载滚动条插件
+            document.write('<script src=\"common\/jquery.mCustomScrollbar.concat.min.js\"><\/script>');
+        }
 
         //onLoad & Listener
         $(function () {
