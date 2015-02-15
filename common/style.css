@@ -282,6 +282,7 @@ a {
 
 .writer-info-input-label {
     padding: .25em .5em;
+    display:block;
 }
 
 .writer-info-inputer {

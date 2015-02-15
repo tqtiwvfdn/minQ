@@ -69,16 +69,16 @@
                 <!--主页 end-->
                 <!--添加来信者 start-->
                 <div id="addPage">
-                    <form id="addPageForm">
+                    <form id="addPageForm" method="post" >
                         <h4 class="writer-info-input-title">基本信息</h4>
                         <ol class="writer-info-input-list">
                             <li>
                                 <label class="writer-info-input-label">姓名</label>
-                                <input type="text" required="required" name="writerName" id="writerName" placeholder="姓名" value="" class="writer-info-inputer" />
+                                <input type="text" required="required" name="writerName" id="writerName" placeholder="姓名" value="" tabindex="1" class="writer-info-inputer" />
                             </li>
                             <li>
                                 <label class="writer-info-input-label">性别</label>
-                                <select id="writerIsMan" name="writerIsMan" class="writer-info-inputer" required="required">
+                                <select id="writerIsMan" name="writerIsMan" class="writer-info-inputer" required="required" tabindex="2">
                                     <option disabled="disabled" value="" selected="selected">请选择…</option>
                                     <option value="0">男</option>
                                     <option value="1">女</option>
@@ -87,7 +87,7 @@
                             </li>
                             <li>
                                 <label class="writer-info-input-label">地区</label>
-                                <input type="text" name="writerArea" id="writerArea" placeholder="地区" value="" class="writer-info-inputer" required="required" />
+                                <input type="text" name="writerArea" id="writerArea" placeholder="地区" value="" class="writer-info-inputer" required="required" tabindex="3" />
                             </li>
                         </ol>
                         <hr class="writer-info-input-hr" />
@@ -95,11 +95,11 @@
                         <ol class="writer-info-input-list">
                             <li>
                                 <label class="writer-info-input-label">主题</label>
-                                <input type="text" name="topicTitle" id="topicTitle" placeholder="主题" value="" class="writer-info-inputer" required="required" />
+                                <input type="text" name="topicTitle" id="topicTitle" placeholder="主题" value="" class="writer-info-inputer" required="required" tabindex="4" />
                             </li>
                         </ol>
                         <div class="writer-info-input-btn-group">
-                            <button class="writer-info-input-btn btn" type="button" id="addPageBtn">添加</button>
+                            <button class="writer-info-input-btn btn" type="button" id="addPageBtn" tabindex="5">添加</button>
                         </div>
                     </form>
                 </div>
@@ -317,15 +317,20 @@
 
             //btn-add click
             $('#BtnAdd').click(function () {
-                showPageByIndex(1);
+                showPageByIndex(1,true);
             });
             //用于触屏效果下的软键盘导致resize的补丁
             $(':input:not(button)').focus(function () {
                 isNotInputFocus = false;
-               // alert(isNotInputFocus);
+                // alert(isNotInputFocus);
             }).blur(function () {
                 isNotInputFocus = true;
-               // alert(isNotInputFocus);
+                // alert(isNotInputFocus);
+            }).keyup(function (e) {
+                /*等我看完jQUery再说*/
+            });
+            $(window).keydown(function (e) {
+                console.log(e.which);
             });
             //aside-menu click
             $('.aside-menu').click(function (e) {
@@ -431,14 +436,14 @@
             }
         }
         //显示子页面
-        function showPageByIndex(index) {
+        function showPageByIndex(index,isFocusOnFirstObject) {
             //console.log(index);
             if (!index || index < 0 || index >= pageElems.length) {
                 showError('0x004显示子页面索引错误');
             } else {
                 var i = 0, elem,
                     showClass = pageElems[index].substring(1) + '-show',
-                removeClass = (pageElems[pageElems.length - index].substring(1) || '')+'-show';
+                removeClass = (pageElems[pageElems.length - index].substring(1) || '') + '-show';
                 //窄屏下隐藏aside
                 for (; (elem = contentElems[i]) != null; i++) {
                     $(elem).removeClass('aside-show');
@@ -458,10 +463,16 @@
                     }
                     setMainTitle(pageElems[index] + 'Title');
                     $('.bg-div').addClass('deeper');
+
+                    if (!!isFocusOnFirstObject) {
+                        setTimeout(function () {
+                            $(':input:first', $(pageElems[index])).focus();
+                        }, 800);
+                    }
                 }
-               // if (isPcScreen) {
-               //     $(contentElems[1]).mCustomScrollbar("update");
-               // }
+                // if (isPcScreen) {
+                //     $(contentElems[1]).mCustomScrollbar("update");
+                // }
             }
         }
         //添加主题到菜单
