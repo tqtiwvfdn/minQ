@@ -87,10 +87,49 @@ a {
         color: #CCC;
         opacity: 1;
     }
-/*bg*/
-.bg-div {
-    display: none;
-}
+    /*bg*/
+    .bg-div {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -2;
+        background-position: top center;
+        background-repeat: repeat;
+        background-size: cover;
+        background-size: auto 100%;
+        height: 100%;
+        width: 100%;
+        max-height: 100%;
+        max-width: 100%;
+        overflow: hidden;
+        -webkit-filter: blur(1px); /* Chrome, Opera */
+        -moz-filter: blur(3px);
+        -ms-filter: 'alpha(opacity=50)';
+        filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=3, MakeShadow=false);
+        /* filter:url('blur.svg');*/
+        filter: blur(3px);
+        /*    background-image:url('blur.svg');*/
+        text-align: center;
+        transition: -ms-filter linear .4s;
+        -webkit-transition: -webkit-filter linear .4s;
+        -moz-transition: -moz-filter linear .4s;
+        opacity:0;
+    }
+
+        .bg-div.deeper {
+            -webkit-filter: blur(10px); /* Chrome, Opera */
+            -moz-filter: blur(10px);
+            -ms-filter: 'alpha(opacity=30)';
+            filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=10, MakeShadow=false);
+            filter: blur(10px);
+        }
+    .opacity {
+        opacity:.8;
+    }
+    .opacity.deeper {
+        opacity: .3;
+    }
 /*header*/
 .header {
     position: fixed;
@@ -322,7 +361,7 @@ a {
 .writer-info-input-btn-group,
 .content-area-btn-group {
     font-size: 1rem;
-    padding: 1em 2em 0;
+    padding: 1em;
     text-align: right;
 }
 
@@ -470,47 +509,7 @@ footer {
         font-size: 16px;
         -ms-touch-action: none;
     }
-    /*bg*/
-    .bg-div {
-        display: block;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: -2;
-        background-position: top center;
-        background-repeat: repeat;
-        background-size: cover;
-        background-size: auto 100%;
-        height: 100%;
-        width: 100%;
-        max-height: 100%;
-        max-width: 100%;
-        overflow: hidden;
-        -webkit-filter: blur(1px); /* Chrome, Opera */
-        -moz-filter: blur(3px);
-        -ms-filter: 'alpha(opacity=50)';
-        filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=3, MakeShadow=false);
-        /* filter:url('blur.svg');*/
-        filter: blur(3px);
-        /*    background-image:url('blur.svg');*/
-        text-align: center;
-        transition: -ms-filter linear .4s;
-        -webkit-transition: -webkit-filter linear .4s;
-        -moz-transition: -moz-filter linear .4s;
-        opacity:0;
-    }
 
-        .bg-div.deeper {
-            -webkit-filter: blur(10px); /* Chrome, Opera */
-            -moz-filter: blur(10px);
-            -ms-filter: 'alpha(opacity=30)';
-            filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=10, MakeShadow=false);
-            filter: blur(10px);
-        }
-
-    .opacity.deeper {
-        opacity: .3;
-    }
     /*header*/
     .header {
         border-bottom: none;
