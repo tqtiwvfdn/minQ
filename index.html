@@ -108,10 +108,12 @@
             <!--添加来信者 end-->
             <!--对话 start-->
             <div id="dialogPage">
+                <div id="dialogHeader" class="dialog-header">
+                    <span class="info-name">基本信息：</span>
+                    <span class="info-name">主题：</span>
+                </div>
                 <div class="dialog-list-container" id="dialogListContainer">
                     <ol id="dialogList" class="dialog-list">
-                        <li class="dialog-ask"></li>
-                        <li class="dialog-reply"></li>
                     </ol>
                     <hr class="content-area-hr" />
                 </div>
@@ -120,14 +122,14 @@
                         <h4 class="content-area-title">抬头</h4>
                         <ol class="content-area-list">
                             <li>
-                                <label class="content-area-label">时间</label>
-                                <input type="text" required="required" name="contentTime" id="contentName" placeholder="yyyy/mm/dd HH:MM" value="" tabindex="6" class="content-area-inputer" />
                                 <label class="content-area-label">来往</label>
                                 <select id="contentIsReply" name="contentIsReply" class="content-area-inputer" required="required" tabindex="7">
                                     <option disabled="disabled" value="" selected="selected">请选择…</option>
                                     <option value="false">来信</option>
                                     <option value="true">回信</option>
                                 </select>
+                                <label class="content-area-label">时间</label>
+                                <input type="text" required="required" name="contentTime" id="contentTime" placeholder="yyyy/mm/dd HH:MM" value="" tabindex="6" class="content-area-inputer" />
                             </li>
                         </ol>
                         <h4 class="content-area-title">内容</h4>
@@ -138,7 +140,9 @@
                             </li>
                         </ol>
                         <div class="content-area-btn-group">
-                            <input type="file" hidden="hidden">
+                            <input type="file" hidden="hidden" id="contentAreaImg" name="contentAreaImg">
+                            <input type="number" hidden="hidden" id="dialogWriterID" name="dialogWriterID" />
+                            <input type="text" hidden="hidden" id="dialogWriterName" name="dialogWriterName" />
                             <button class="btn content-area-img-btn" type="button" id="contentAreaImgBtn" tabindex="9">&Xi;<span class="info-name">&nbsp;图片</span></button>
                             <button class="btn content-area-btn" type="button" id="contentAreaBtn" tabindex="10">输入</button>
                         </div>
@@ -162,7 +166,7 @@
     </footer>
     <div id="topicTitleTemp" class="hide">
         <ol>
-            <li data-id="writerID">
+            <li data-id="writerID" data-name="writerName">
                 <dl class="writer-info">
                     <dt>第listIndex位来信者</dt>
                     <dd title="writerInfo"><span class="info-name">基本信息：</span>writerInfo</dd>
@@ -171,7 +175,33 @@
             </li>
         </ol>
     </div>
+    <div id="dialogContainerTemp" class="hide">
+        <ol>
+            <li class="dialog-ask">
+                <div class="dialog-container">
+                    <p class="dialog-content-attribute">来信&nbsp;&nbsp;contentTime</p>
+                    writerContent
+                </div>
+            </li>
+        </ol>
+        <ol>
+            <li class="dialog-reply">
+                <div class="dialog-container">
+                    <p class="dialog-content-attribute">回信&nbsp;&nbsp;contentTime</p>
+                    <p>你好，writerName：</p>
+                    writerContent
+                    <p class="dialog-content-footer">浪矢杂货店</p>
+                </div>
+            </li>
+        </ol>
+    </div>
     <script src="common/jquery-1.11.2.js"></script>
+    <script>
+        var hslp = 40;
+        document.write('<style>@media screen and (min-width:'+pcScreenMinWidth+'px){.dialog-ask>.dialog-container{background-color:' + $.hslTorgba('hsl(' + hsl + ',50%,' + (hslp += 10) + '%)', .5) + '}');
+        document.write('.dialog-reply>.dialog-container{background-color:' + $.hslTorgba('hsl(' + hsl + ',50%,' + (hslp += 20) + '%)', .6) + '}');
+        document.write('.content-area{background-color:' + $.hslTorgba('hsl(' + hsl + ',50%,' + (hslp += 25) + '%)', .9) + '}' + '}</style');
+    </script>
     <script src="common/stackBlur.min.js"></script>
     <script type='text/javascript'>
         /*初始化全局变量*/
@@ -180,13 +210,13 @@
             scrollbarStyle = {
                 axis: "y",
                 scrollButtons: { enable: false },
-                theme: "rounded",
+                theme: "light-2",
             },
             pageElems = ['#defaultPage', '#addPage', '#dialogPage'],
             scrollbarElems = ['#aside', '#defaultPage', '#addPage', '#dialogListContainer'];
-        if (window.navigator.msPointerEnabled) {
-            scrollbarStyle.theme = 'light-2';
-        }
+       //if (window.navigator.msPointerEnabled) {
+       //    scrollbarStyle.theme = 'light-2';
+       //}
         var backgroundImage, bgImage = new Image(), isNotSupportFilter;
         /*PC端初始化函数*/
         if (isPcScreen) {
@@ -270,6 +300,7 @@
             $('body').animate({
                 'opacity':1
             });
+
             /*设置header背景色 End*/
             /*设置header动画 Start*/
             var isHeaderTitleToggle = false;
@@ -371,15 +402,17 @@
             }).keyup(function (e) {
                 /*等我看完jQUery再说*/
             });
-            $(window).keydown(function (e) {
-                console.log(e.which);
-            });
+            //$(window).keydown(function (e) {
+            //    console.log(e.which);
+            //});
             //aside-menu click
             $('.aside-menu').click(function (e) {
                 var $writerElem = $($(e.target || window.event.srcElement).closest('li'));
                 if (!!$writerElem.length) {
                     showDialogByID($writerElem.attr('data-id'),
-                        '第' + ($writerElem.index() + 1) + '位：' + $writerElem.find('dd:last').attr('title'));
+                        '第' + ($writerElem.index() + 1) + '位',
+                        $writerElem.find('dd:first').attr('title'),
+                        $writerElem.find('dd:last').attr('title'));
                     if(isPcScreen){
                         $(contentElems[0]).mCustomScrollbar('scrollTo',$writerElem);
                     }
@@ -408,8 +441,10 @@
                         'max-width': contentWidth,
                     });
                     setTimeout(function () {
+                        var $dialogPage = $('#dialogPage');
+                        //console.log($('#dialogHeader', $dialogPage).outerHeight());
                         $('#dialogListContainer').animate({
-                            'height': $('#dialogPage').innerHeight() - $('#contentArea').outerHeight()
+                            'height': $dialogPage.innerHeight() - $('#dialogHeader', $dialogPage).outerHeight() - $('#contentArea', $dialogPage).outerHeight()
                         }, 200);
                     }, 500);
                     //滚动条部分
@@ -438,9 +473,11 @@
                             'max-width': 'auto',
                         }).mCustomScrollbar("destroy");
                     }
-                    $('#dialogListContainer').css({
-                        'height': 'auto'
-                    });
+                    setTimeout(function () {
+                        $('#dialogListContainer').css({
+                            'height': 'auto'
+                        });
+                    }, 100);
                     if ($(contentElems[0]).hasClass('aside-show')) {
                         setMainTitle('#asideMenuTitle');
                     }
@@ -472,22 +509,25 @@
             console.log(msg);
         }
         //显示对话框
-        function showDialogByID(writerID,topicTitle) {
+        function showDialogByID(writerID,mainTitle, writerInfo, topicTitle) {
             if (!writerID||writerID<0) {
                 showError('0x003无来信者ID');
             } else {
                 /*清空dialogPage*/
-                $('#dialogList').empty().append(dialogDefaultTips);
-                /*ajax dialog数据*/
-                //console.log($(window).innerHeight());
-                //console.log($('header').outerHeight());
-                //console.log($('footer').outerHeight());
-                if ($(window).width()>=pcScreenMinWidth) {
-                    $('#dialogListContainer').css('height', $('#dialogPage').innerHeight() - $('#contentArea').outerHeight());
+                $('#dialogHeader').html(dialogDefaultTips.replace(/writerInfo/, writerInfo).replace(/topicTitle/, topicTitle));
+                //console.log($('#dialogHeader').html());
+                $('#dialogWriterID').val(writerID);
+                $('#dialogWriterName').val(writerInfo.substring(0,writerInfo.indexOf('，')));
+                if ($(window).width() >= pcScreenMinWidth) {
+                    var $dialogPage = $('#dialogPage');
+                    //console.log($('#dialogHeader', $dialogPage).outerHeight());
+                    $('#dialogListContainer').css({
+                        'height': $dialogPage.innerHeight() - $('#dialogHeader', $dialogPage).outerHeight() - $('#contentArea', $dialogPage).outerHeight()
+                    });
                 }
                 /*显示dialogPage*/
                 showPageByIndex(2);
-                $(pageElems[2] + 'Title').text(topicTitle);
+                $(pageElems[2] + 'Title').html(mainTitle + '<span class="info-name">：' + topicTitle + '</span>');
             }
         }
         //显示子页面
@@ -547,6 +587,7 @@
             }
             topicTitleTemp = topicTitleTemp
                 .replace(/writerID/g, writerInfo.writerID)
+                .replace(/writerName/g, writerInfo.writerName)
                 .replace(/writerInfo/g, [writerInfo.writerName, writerInfo.writerIsMan, writerInfo.writerArea].join('，'))
                 .replace(/topicTitle/g,writerInfo.topicTitle)
                 .replace(/listIndex/g, $asideMenu.children().length + 1);
@@ -557,65 +598,101 @@
             if (!isNotScrollToButtom && isPcScreen) {
                 $(scrollbarElems[0]).mCustomScrollbar('scrollTo', ['bottom', null]);
             }
-            //console.log(topicTitleTemp);
+            return true;
         }
     </script>
     <script>
         //ajax部分
         var errorTips = '<span class="error">*必须填写</span>',
-            dialogDefaultTips = '<li class="dialog-tips"><span>暂无信息</span></li>';
-        //加载asideMenu
+            dialogDefaultTips = '<span class="info-name">基本信息：</span>writerInfo</br><span class="info-name">主题：</span>topicTitle';
         $(function () {
-            $.ajax({
-                cache: false,
-                type: 'Get',
-                url: 'ajax/getTopicTitle.asp',
-                data:'writerID='+($.queryString('writerID')||''),
-            }).done(function (data) {
+            //加载asideMenu
+            ajaxForm($(), $(), 'GET', 'writerID=' + ($.queryString('writerID') || ''), '', 'ajax/getTopicTitle.asp', function (data) {
                 var writers = eval(data);
-                //console.log(data);
                 if (writers.length > 1) {
                     for (var i = 0; i < writers.length - 2; i++) {
-                        addWriterInfoMenu(writers[i],true,true);
+                        addWriterInfoMenu(writers[i], true, true);
                     }
-                    addWriterInfoMenu(writers[i],false,true);
+                    addWriterInfoMenu(writers[i], false, true);
                 }
-            }).fail(ajaxFail);
+            });
 
             //点击添加按钮
             $('#addPageBtn').click(function () {
                 var $addPageBtn = $(this),
                     $addPageForm = $('#addPageForm');
-                $addPageBtn.attr('disabled', 'disabled');
-
-                if ($.checkFormRequired($addPageForm,errorTips)) {
-                    //必填的部分已经全部填完
-                    $.ajax({
-                        cache: true,
-                        type: 'POST',
-                        url: 'ajax/addTopic.asp',
-                        data: $addPageForm.serialize().replace(/\+/g, ''),
-                    }).done(function (data) {
-                        writer = $.parseJSON(data);
-                        //显示以writerID为首的对话框
-                        if (writer.writerID != -1) {
-                            $addPageBtn.removeAttr('disabled');
-                            //将整个添加来信者queryString转成json对象添加到asideMenu中
-                            addWriterInfoMenu($.queryStringToJson($addPageForm.serialize().replace(/\+/g, '') + '&writerID=' + writer.writerID));
-                            showDialogByID(writer.writerID, '新增：' + $addPageForm.find('#topicTitle').val());
-                            $(":input",$addPageForm).not(":button, :submit, :reset, :hidden").val("").removeAttr("checked").remove("selected");
-                        } else {
-                            showError('0x001添加失败,无法写入数据库');
+                ajaxForm($addPageBtn, $addPageForm, 'POST', '', errorTips, 'ajax/addTopic.asp', function (data) {
+                    writer = $.parseJSON(data);
+                    //显示以writerID为首的对话框
+                    if (writer.writerID != -1) {
+                        //将整个添加来信者queryString转成json对象添加到asideMenu中
+                        if (addWriterInfoMenu($.queryStringToJson($addPageForm.serialize().replace(/\+/g, '') + '&writerID=' + writer.writerID))) {
+                            $('#asideMenu').children(':last').trigger('click');
                         }
-                    }).fail(function (jqXHR, textStatus, errorThrown) {
-                        ajaxFail(jqXHR, textStatus+'addBtn', errorThrown);
-                        $addPageBtn.removeAttr('disabled');
+                        $.resetFormData($addPageForm);
+                    } else {
+                        showError('0x001添加失败,无法写入数据库');
+                    }
+                });
+            });
+
+            //点击输入按钮
+            $('#contentAreaBtn').click(function () {
+                var checkContentTimeReg = /^\d{4}\/\d{1,2}\/\d{1,2}\s\d{1,2}\:\d{1,2}$/;
+                if (checkContentTimeReg.test($('#contentTime').val())) {
+                    var $contentAreaBtn = $(this),
+                        $contentForm = $('#contentForm');
+                    ajaxForm($contentAreaBtn, $contentForm, 'POST', '', '', 'ajax/addContent.asp', function (data) {
+                        if ($.trim(data) == 1) {
+                            var writerContent = $.queryStringToJson($contentForm.serialize().trim());
+                            for (var p in writerContent) {
+                                console.log(p, writerContent[p]);
+                            }
+
+
+                            $.resetFormData($contentForm);
+                            var dialogContainerTemp;
+                            if (writerContent.contentIsReply === 'false') {
+                                dialogContainerTemp = $.trim($('ol:eq(0)', $('#dialogContainerTemp')).html());
+                            } else {
+                                dialogContainerTemp = $('ol:eq(1)', $('#dialogContainerTemp')).html();
+                                dialogContainerTemp = dialogContainerTemp.replace(/writerName/g, writerContent.dialogWriterName);
+                            }
+                            dialogContainerTemp = dialogContainerTemp
+                                .replace(/contentTime/g, new Date(writerContent.contentTime).toLocaleString())
+                                .replace(/writerContent/g, '<p class="text-indent">' + writerContent.contentAreaContent.replace(/\+/g, ' ')
+                                .replace(/<\/br>/g, '</p><p class="text-indent">') + '</p>');
+                            $('#dialogList').append(dialogContainerTemp);
+                            $(scrollbarElems[3]).mCustomScrollbar('scrollTo', ['bottom', null]);
+                        }
                     });
                 } else {
-                    $addPageBtn.removeAttr('disabled');
+                    $('#contentTime').focus();
                 }
             });
         });
+        //ajax抽象类
+        function ajaxForm($srcBtn, $srcForm, method, extraData, errorTips, targetUrl, successFunc) {
+            $srcBtn.attr('disabled', 'disabled');
+
+            if ($.checkFormRequired($srcForm, errorTips)) {
+                //必填的部分已经全部填完
+                $.ajax({
+                    cache: true,
+                    type: method || 'POST',
+                    url: targetUrl,
+                    data: $srcForm.serialize().trim().replace(/\+{1,}/g, '%20') + extraData,
+                }).done(function (data) {
+                    successFunc(data);
+                    $srcBtn.removeAttr('disabled');
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    ajaxFail(jqXHR, textStatus + $srcBtn[0].name, errorThrown);
+                    $srcBtn.removeAttr('disabled');
+                });
+            } else {
+                $srcBtn.removeAttr('disabled');
+            }
+        }
         //ajaxFail抽象函数
         function ajaxFail(jqXHR, textStatus, errorThrown) {
             showError('0x002添加失败，ajax失败' + textStatus);

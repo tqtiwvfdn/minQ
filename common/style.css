@@ -68,7 +68,9 @@ a {
     vertical-align: top;
     padding-left: .5em;
 }
-
+.text-indent {
+    text-indent: 2em;
+}
 .hide {
     display: none;
 }
@@ -343,22 +345,37 @@ a {
     color: #3EC1FF;
 }
 /*dialog-page*/
+.dialog-header {
+    font-size: 1rem;
+    text-shadow: none;
+    padding: .5em 0 .5em 1em;
+}
 .dialog-list {
     margin: 0;
-    padding: 1em;
+    padding: 0 1em;
     font-size: 1rem;
 }
-.dialog-tips {
-    text-align:center;
-}
-    .dialog-tips > span {
-        padding: .25em 1em;
-        background-color: rgba(0,0,0,.2);
-        border-radius: 1em;
-        font-size: .85rem;
-        color: #FFF;
-        text-shadow: none;
+    .dialog-list > li + li {
+        border-top: 1px solid rgba(242, 242, 242, 0.5);
     }
+.dialog-tips {
+    text-shadow:none;
+}
+.dialog-container {
+    font-size:.875rem;
+    text-shadow:none;
+}
+    .dialog-container > p {
+        margin:0;
+        line-height:2em;
+    }
+.dialog-content-attribute {
+    text-align: right;
+    font-size: .75rem;
+}
+.dialog-content-footer {
+    text-align:right;
+}
 /*content end*/
 footer {
     display: none;
@@ -702,6 +719,26 @@ footer {
     .content-area-content-item {
         padding-top:0;
         padding-bottom:0;
+    }
+    .dialog-list>li+li{
+        border-top:none;
+    }
+    .dialog-ask, .dialog-reply {
+        padding: .75em 0 1.5em;
+    }
+    .dialog-reply>.dialog-container {
+        margin:0 0 0 auto;
+    }
+    .dialog-container {
+        width: 500px;
+        max-width:50%;
+        background-color: rgba(0,0,0,.2);
+        color: #FFF;
+        padding: .25em 1em;
+        text-align:left;
+    }
+    .dialog-container > p {
+        line-height:1.5em;
     }
     /*footer*/
     footer {

@@ -10367,8 +10367,24 @@ jQuery.extend({
     },
     //将queryString转成json语句
     queryStringToJson: function (queryString) {
-        queryString=decodeURIComponent(queryString, true);
+        queryString = queryString.replace(/\+{1,}/g, ' ');
+        queryString = decodeURIComponent(queryString, true);
+        queryString = queryString.replace(/[\r|\r\n|\n]{1,}/g, '</br>');
         return jQuery.parseJSON('{"' + queryString.replace(/&/g, '\",\"').replace(/=/g, '\":\"') + '"}');
+    },
+    resetFormData: function ($targetForm) {
+        $(":input", $targetForm).not(":button, :submit, :reset, :hidden").val("").removeAttr("checked").remove("selected");
+    },
+    hslTorgba: function (hsl, opacity) {
+        var $elem = $(document.createElement("div"));
+        opacity = opacity || 1,
+        targetCSS = 'background-color';
+        $elem.css(targetCSS, hsl);
+        var css = $elem.css(targetCSS).toString();
+        if (jQuery.support.opacity && $(window).width() >= pcScreenMinWidth) {
+            return css.replace('rgb', 'rgba').replace(')', ',' + opacity + ')');
+        }
+        return css;
     }
 });
 jQuery.fn.extend({
