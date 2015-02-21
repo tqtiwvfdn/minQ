@@ -15,8 +15,8 @@ body {
     cursor: default;
     zoom: 1;
     -webkit-tap-highlight-color: transparent; /*iPhone去除点击时的阴影*/
-        -webkit-appearance:none;
-    opacity:0;
+    -webkit-appearance: none;
+    opacity: 0;
 }
 ol, ul {
     list-style:none;
@@ -71,6 +71,9 @@ a {
 .text-indent {
     text-indent: 2em;
 }
+.text-center {
+    text-align:center;
+}
 .hide {
     display: none;
 }
@@ -101,7 +104,7 @@ a {
 /*header*/
 .header {
     position: fixed;
-    display: none;
+    display: block;
     max-width: 100%;
     width: 100%;
     top: 0;
@@ -148,22 +151,31 @@ a {
 /*content start*/
 /*aside*/
 #content {
+    position:relative;
     margin-top: 3.5rem;
     max-width: 100%;
     overflow-x: hidden;
+    left:0;
 }
 
 .aside {
-    display: none;
-    max-width: 100%;
+    position: fixed;
+    left: -100%;
+    max-width: 80%;
+    width: 80%;
+    height: 85%;
     background-color: #3EC1FF;
     color: #FFF;
     text-shadow: 0 0 4px #AAAAAA;
-    transition: height linear .2s;
+    transition: left linear .2s;
+    box-shadow: 10px 10px 50px #CCC;
 }
 
     .aside.aside-show {
         display: block;
+        left: 0;
+        z-index: 10;
+        overflow: auto;
     }
 
 .aside-menu {
@@ -240,7 +252,7 @@ a {
 }
 
     .article.aside-show {
-        display: none;
+        /*display: none;*/
     }
 
 #defaultPage,
@@ -350,6 +362,9 @@ a {
     text-shadow: none;
     padding: .5em 0 .5em 1em;
 }
+#dialogListContainer {
+    overflow:auto;
+}
 .dialog-list {
     margin: 0;
     padding: 0 1em;
@@ -363,11 +378,15 @@ a {
 }
 .dialog-container {
     font-size:.875rem;
-    text-shadow:none;
 }
     .dialog-container > p {
         margin:0;
         line-height:2em;
+    }
+    .dialog-container-img {
+        min-width:10px;
+        max-width:90%;
+        margin:1em auto;
     }
 .dialog-content-attribute {
     text-align: right;
@@ -502,6 +521,9 @@ footer {
         font-size: 16px;
         -ms-touch-action: none;
     }
+    body {
+        overflow:hidden;
+    }
     /*bg*/
     .bg-div {
         display: block;
@@ -590,9 +612,14 @@ footer {
         }
 
     .aside {
+        position: static;
+        max-height: 100%;
+        height: 100%;
         vertical-align: top;
         max-width: 250px;
         width: 250px;
+        box-shadow: none;
+        z-index: 1;
     }
 
     .aside-menu {

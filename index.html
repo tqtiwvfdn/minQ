@@ -71,7 +71,7 @@
             <!--主页 end-->
             <!--添加来信者 start-->
             <div id="addPage">
-                <form id="addPageForm" method="post">
+                <form id="addPageForm" name="addPageForm" method="post">
                     <h4 class="writer-info-input-title">基本信息</h4>
                     <ol class="writer-info-input-list">
                         <li>
@@ -112,16 +112,20 @@
                     <span class="info-name">基本信息：</span>
                     <span class="info-name">主题：</span>
                 </div>
+                <!--对话内容容器 Start-->
                 <div class="dialog-list-container" id="dialogListContainer">
                     <ol id="dialogList" class="dialog-list">
                     </ol>
                     <hr class="content-area-hr" />
                 </div>
+                <!--对话内容容器 End-->
+                <!--输入部分 Start-->
                 <div class="content-area" id="contentArea">
-                    <form id="contentForm">
+                    <form id="contentForm" name="contentForm" method="post" action="ajax/uploadFile-bis.asp" enctype="multipart/form-data">
                         <h4 class="content-area-title">抬头</h4>
                         <ol class="content-area-list">
                             <li>
+                                <input type="file" hidden="hidden" id="contentAreaImg" name="contentAreaImg">
                                 <label class="content-area-label">来往</label>
                                 <select id="contentIsReply" name="contentIsReply" class="content-area-inputer" required="required" tabindex="7">
                                     <option disabled="disabled" value="" selected="selected">请选择…</option>
@@ -130,24 +134,24 @@
                                 </select>
                                 <label class="content-area-label">时间</label>
                                 <input type="text" required="required" name="contentTime" id="contentTime" placeholder="yyyy/mm/dd HH:MM" value="" tabindex="6" class="content-area-inputer" />
+                                <input type="number" hidden="hidden" id="topicID" name="topicID" />
+                                <input type="text" hidden="hidden" id="topicWriterName" name="topicWriterName" />
                             </li>
                         </ol>
                         <h4 class="content-area-title">内容</h4>
                         <ol class="content-area-list">
                             <li class="content-area-content-item">
                                 <label class="content-area-label content-area-content-label">内容</label>
-                                <textarea id="contentAreaContent" name="contentAreaContent" required="required" class="content-area-inputer content-area-textarea" tabindex="8" placeholder="输入内容…"></textarea>
+                                <textarea id="topicContent" name="topicContent" class="content-area-inputer content-area-textarea" tabindex="8" placeholder="输入内容…"></textarea>
                             </li>
                         </ol>
                         <div class="content-area-btn-group">
-                            <input type="file" hidden="hidden" id="contentAreaImg" name="contentAreaImg">
-                            <input type="number" hidden="hidden" id="dialogWriterID" name="dialogWriterID" />
-                            <input type="text" hidden="hidden" id="dialogWriterName" name="dialogWriterName" />
                             <button class="btn content-area-img-btn" type="button" id="contentAreaImgBtn" tabindex="9">&Xi;<span class="info-name">&nbsp;图片</span></button>
                             <button class="btn content-area-btn" type="button" id="contentAreaBtn" tabindex="10">输入</button>
                         </div>
                     </form>
                 </div>
+                <!--输入部分 End-->
             </div>
             <!--对话 end-->
         </article>
@@ -164,6 +168,7 @@
             ナミヤ雑貨店
         </p>
     </footer>
+    <!--添加Topic Title-->
     <div id="topicTitleTemp" class="hide">
         <ol>
             <li data-id="writerID" data-name="writerName">
@@ -175,12 +180,13 @@
             </li>
         </ol>
     </div>
+    <!--添加 Topic Conent-->
     <div id="dialogContainerTemp" class="hide">
         <ol>
             <li class="dialog-ask">
                 <div class="dialog-container">
                     <p class="dialog-content-attribute">来信&nbsp;&nbsp;contentTime</p>
-                    writerContent
+                    topicContent
                 </div>
             </li>
         </ol>
@@ -188,20 +194,22 @@
             <li class="dialog-reply">
                 <div class="dialog-container">
                     <p class="dialog-content-attribute">回信&nbsp;&nbsp;contentTime</p>
-                    <p>你好，writerName：</p>
-                    writerContent
+                    <p>writerName，你好：</p>
+                    topicContent
                     <p class="dialog-content-footer">浪矢杂货店</p>
                 </div>
             </li>
         </ol>
     </div>
     <script src="common/jquery-1.11.2.js"></script>
+    <!--动态生成的CSS部分-->
     <script>
-        var hslp = 40;
+        var hslp = 40, speed = 350;
         document.write('<style>@media screen and (min-width:'+pcScreenMinWidth+'px){.dialog-ask>.dialog-container{background-color:' + $.hslTorgba('hsl(' + hsl + ',50%,' + (hslp += 10) + '%)', .5) + '}');
         document.write('.dialog-reply>.dialog-container{background-color:' + $.hslTorgba('hsl(' + hsl + ',50%,' + (hslp += 20) + '%)', .6) + '}');
         document.write('.content-area{background-color:' + $.hslTorgba('hsl(' + hsl + ',50%,' + (hslp += 25) + '%)', .9) + '}' + '}</style');
     </script>
+    <!--IE滤镜补丁-->
     <script src="common/stackBlur.min.js"></script>
     <script type='text/javascript'>
         /*初始化全局变量*/
@@ -212,11 +220,10 @@
                 scrollButtons: { enable: false },
                 theme: "light-2",
             },
+            //子页面组
             pageElems = ['#defaultPage', '#addPage', '#dialogPage'],
+            //滚动页面组
             scrollbarElems = ['#aside', '#defaultPage', '#addPage', '#dialogListContainer'];
-       //if (window.navigator.msPointerEnabled) {
-       //    scrollbarStyle.theme = 'light-2';
-       //}
         var backgroundImage, bgImage = new Image(), isNotSupportFilter;
         /*PC端初始化函数*/
         if (isPcScreen) {
@@ -249,7 +256,6 @@
                             }).fadeIn(500);
                             //IE10不支持width=auto start
                             if (bgCanvasProportion !== ($bgCanvas.width() / $bgCanvas.height()).toFixed(2)) {
-                             //   alert('not-fixed');
                                 $bgCanvas.css({
                                     'width': bgCanvasProportion*$bgCanvas.height()
                                 });
@@ -278,7 +284,7 @@
 
         //onLoad & Listener
         $(function () {
-            var hslp, isMainTitleHidden;
+            var isMainTitleHidden;
             /*修复inline-block空隙 Start*/
             $('.header-titles').contents().filter(function () {
                 return this.nodeType === 3;
@@ -288,15 +294,12 @@
             }).remove();
             /*修复inline-block空隙 End*/
             /*设置header背景色 Start*/
-            //$('body').hide();
-            //hsl = $.queryString('hsl') || document.location.replace('?hsl=' + parseInt(Math.random() * 361, 0) + '&bgi=' + parseInt(Math.random() * imagesCounts + 1, 0));
-            //hsl = parseInt(Math.random() * 360, 0);
             hslp = 30;
             $('.header-titles li.title:not(:last)').each(function () {
                 $(this).hslTorgba('background-color','hsl(' + hsl + ',50%,' + (hslp += 10) + '%)',hslp*.01);
             });
-            $('header').hslTorgba('background-color', 'hsl(' + hsl + ',50%,' + (hslp += 10) + '%)', .5).fadeIn(100);
-            $('aside').hslTorgba('background-color', 'hsl(' + hsl + ',50%,' + (hslp += 10) + '%)', .8);
+            $('header').hslTorgba('background-color', 'hsl(' + hsl + ',50%,' + (hslp += 10) + '%)', .5);
+            $('aside').hslTorgba('background-color', 'hsl(' + hsl + ',50%,' + (hslp += 5) + '%)', .5);
             $('body').animate({
                 'opacity':1
             });
@@ -310,8 +313,7 @@
                     var $src = $(e.target || event.srcElement);
                     if (!isMainTitleHidden && $(window).width() >= pcScreenMinWidth) {
                         isMainTitleHidden = true;
-                        //console.log($src.parent().html());
-                        if ($src.hasClass('header-titles') || $src.parent().hasClass('main-title')) {
+                        if ($src.hasClass('header-titles') || $src.parent().hasClass('main-title') || $src.parent().parent().hasClass('main-title')) {
                             //title
                             for (var i = 0, elemWidth,
                                 elems = $('.header-titles li.title:not(:last)'),
@@ -319,23 +321,44 @@
                                 elemWidth = $elem.width();
                                 $elem.animate({
                                     'width': parseInt(elemWidth) > 0 ? (!titleWidths[i] ? titleWidths[i] = elemWidth : 0) && 0 : titleWidths[i]
-                                });
+                                }, speed);
                             }
-                            //aside&article
-                            var $asideElem = $(contentElems[0]),
-                                asideWidth = parseInt($asideElem.css('max-width'), 0) - parseInt($asideElem.css('width'), 0);
-                            $asideElem.animate({
-                                width: asideWidth,
-                            });
-                            $(contentElems[1]).animate({
-                                'width': $('#content').innerWidth() - asideWidth,
-                                'max-width': $('#content').innerWidth() - asideWidth,
-                            });
+                            //aside & article
+                            var $content = $('#content'), $aside = $(contentElems[0]), $article = $(contentElems[1]),
+                                $dialogPage = $('#dialogPage');
+                            if (parseInt($content.css('left'))*-1  == +$aside.width()) {
+                                $article.animate({
+                                    'width': '-=' + $aside.width(),
+                                    'max-width': '-=' + $aside.width(),
+                                }, speed);
+                                $content.animate({
+                                    'left': 0,
+                                    'width': $content.width()-$aside.width(),
+                                    'max-width': $content.width() - $aside.width(),
+                                }, speed)
+                                $('#dialogListContainer').animate({
+                                    'height': $dialogPage.innerHeight() - $('#dialogHeader', $dialogPage).outerHeight() - $('#contentArea', $dialogPage).outerHeight()
+                                }, speed);
+                            } else {
+                                $content.animate({
+                                    'left': -1 * $aside.width(),
+                                    'width': $content.width() + $aside.width(),
+                                }, speed).css({
+                                    'max-width': $content.width() + $aside.width(),
+                                });
+                                $article.animate({
+                                    'width': '+=' + $aside.width(),
+                                    'max-width': '+=' + $aside.width(),
+                                }, speed);
+                                $('#dialogListContainer').animate({
+                                    'height': $dialogPage.innerHeight() - $('#dialogHeader', $dialogPage).outerHeight(),
+                                }, speed);
+                            }
                         }
                         isMainTitleHidden = false;
                     } else if ($(window).width() < pcScreenMinWidth) {
                         //显示或隐藏aside/article
-                        if ($src.hasClass('header-titles') || $src.parent().hasClass('main-title')) {
+                        if ($src.hasClass('header-titles') || $src.parent().hasClass('main-title') || $src.parent().parent().hasClass('main-title')) {
                             for (var elem in contentElems) {
                                 $(contentElems[elem]).toggleClass('aside-show');
                             }
@@ -398,27 +421,11 @@
                 // alert(isNotInputFocus);
             }).blur(function () {
                 isNotInputFocus = true;
-                // alert(isNotInputFocus);
             }).keyup(function (e) {
                 /*等我看完jQUery再说*/
             });
-            //$(window).keydown(function (e) {
-            //    console.log(e.which);
-            //});
-            //aside-menu click
-            $('.aside-menu').click(function (e) {
-                var $writerElem = $($(e.target || window.event.srcElement).closest('li'));
-                if (!!$writerElem.length) {
-                    showDialogByID($writerElem.attr('data-id'),
-                        '第' + ($writerElem.index() + 1) + '位',
-                        $writerElem.find('dd:first').attr('title'),
-                        $writerElem.find('dd:last').attr('title'));
-                    if(isPcScreen){
-                        $(contentElems[0]).mCustomScrollbar('scrollTo',$writerElem);
-                    }
-                }
-            });
         });
+
         //resize headerTitle size
         function resizeHeaderTitle() {
             titleWidths.splice(0, titleWidths.length);
@@ -429,48 +436,56 @@
             if (isNotInputFocus) {
                 if (windowWidth >= pcScreenMinWidth) {
                     //#content宽度部分
-                    var contentHeight = $(window).innerHeight() - $('header').outerHeight() - $('footer').outerHeight();
-                    $('#content').css({
+                    var $content = $('#content'),
+                        $aside = $(contentElems[0]),
+                        $article = $(contentElems[1]),
+                        $dialogPage = $('#dialogPage'),
+                        contentHeight = $(window).innerHeight() - $('header').outerHeight() - $('footer').outerHeight();
+                    $content.css({
                         'height': contentHeight,
                         'max-height': contentHeight,
+                        'left': 0,
+                        'width': windowWidth,
+                        'max-width': windowWidth,
                     });
-
-                    var contentWidth = $('#content').innerWidth() - $(contentElems[0]).css('width', 'auto').outerWidth();
-                    $(contentElems[1]).animate({
-                        'width': contentWidth,
-                        'max-width': contentWidth,
-                    });
-                    setTimeout(function () {
-                        var $dialogPage = $('#dialogPage');
-                        //console.log($('#dialogHeader', $dialogPage).outerHeight());
-                        $('#dialogListContainer').animate({
-                            'height': $dialogPage.innerHeight() - $('#dialogHeader', $dialogPage).outerHeight() - $('#contentArea', $dialogPage).outerHeight()
-                        }, 200);
-                    }, 500);
+                        $article.css({
+                            'width': windowWidth - $aside.outerWidth(),
+                            'max-width': windowWidth - $aside.outerWidth(),
+                        });
                     //滚动条部分
                     for (var elems in scrollbarElems) {
                         $(scrollbarElems[elems]).mCustomScrollbar(scrollbarStyle);
                         $(scrollbarElems[elems]).mCustomScrollbar("update");
                     }
                     //全屏时mainTitle不显示‘目录’
-                    if ($(contentElems[0]).hasClass('aside-show')) {
+                    if ($aside.hasClass('aside-show')) {
                         setMainTitle();
                     }
+                    setTimeout(function () {
+                        var $dialogPage = $('#dialogPage');
+                        $('#dialogListContainer').animate({
+                            'height': $dialogPage.innerHeight() - $('#dialogHeader', $dialogPage).outerHeight() - $('#contentArea', $dialogPage).outerHeight(),
+                        }, speed).mCustomScrollbar("scrollTo",["bottom",null]);
+                    }, speed);
                 } else {
                     //恢复
                     $('#content').css({
+                        'left':'0',
                         'height': 'auto',
                         'max-height': '100%',
+                        'max-width':'100%',
                     });
 
                     $(contentElems[1]).css({
-                        'width': 'auto',
-                        'max-width': windowWidth,
+                        'width': '100%',
+                        'max-width': '100%',
                     });
                     for (var i = 0, elem; (elem = scrollbarElems[i]) != null; i++) {
                         $(elem).css({
-                            'width': 'auto',
+                            'width': '100%',
                             'max-width': 'auto',
+                            // 'height': '',
+                            // 'max-height':'auto'
                         }).mCustomScrollbar("destroy");
                     }
                     setTimeout(function () {
@@ -484,14 +499,26 @@
                 }
             }
         }
+    </script>
+    <script>
+        ///
+        ///功能部分
+        ///
+        var checkContentTimeReg = /^\d{4}\/\d{1,2}\/\d{1,2}\s\d{1,2}\:\d{1,2}$/,
+            errorTips = '<span class="error">*必须填写</span>',
+            dialogDefaultTips = '<span class="info-name">基本信息：</span>writerInfo</br><span class="info-name">主题：</span>topicTitle';
+        //错误提示
+        function showError(msg) {
+            console.log(msg);
+        }
         //设置显示的标题
         function setMainTitle(displayTitleID) {
             //要求显示的存在
-            var $mainTitle=$('#mainTitle');
-            $('span',$mainTitle).css('display', 'none');
+            var $mainTitle = $('#mainTitle');
+            $('span', $mainTitle).css('display', 'none');
             if (!!displayTitleID) {
                 $(displayTitleID, $mainTitle).css('display', '');
-            } else if ($(contentElems[0]).hasClass('aside-show')&&$(window).width()<pcScreenMinWidth) {
+            } else if ($(contentElems[0]).hasClass('aside-show') && $(window).width() < pcScreenMinWidth) {
                 $('#asideMenuTitle').css('display', '');
             } else {
                 $pagedefault = $(pageElems[0]);
@@ -504,34 +531,8 @@
                 $(pageElems[0] + 'Title').css('display', '');
             }
         }
-        //错误提示
-        function showError(msg) {
-            console.log(msg);
-        }
-        //显示对话框
-        function showDialogByID(writerID,mainTitle, writerInfo, topicTitle) {
-            if (!writerID||writerID<0) {
-                showError('0x003无来信者ID');
-            } else {
-                /*清空dialogPage*/
-                $('#dialogHeader').html(dialogDefaultTips.replace(/writerInfo/, writerInfo).replace(/topicTitle/, topicTitle));
-                //console.log($('#dialogHeader').html());
-                $('#dialogWriterID').val(writerID);
-                $('#dialogWriterName').val(writerInfo.substring(0,writerInfo.indexOf('，')));
-                if ($(window).width() >= pcScreenMinWidth) {
-                    var $dialogPage = $('#dialogPage');
-                    //console.log($('#dialogHeader', $dialogPage).outerHeight());
-                    $('#dialogListContainer').css({
-                        'height': $dialogPage.innerHeight() - $('#dialogHeader', $dialogPage).outerHeight() - $('#contentArea', $dialogPage).outerHeight()
-                    });
-                }
-                /*显示dialogPage*/
-                showPageByIndex(2);
-                $(pageElems[2] + 'Title').html(mainTitle + '<span class="info-name">：' + topicTitle + '</span>');
-            }
-        }
         //显示子页面
-        function showPageByIndex(index,isFocusOnFirstObject) {
+        function showPageByIndex(index, isFocusOnFirstObject) {
             //console.log(index);
             if (!index || index < 0 || index >= pageElems.length) {
                 showError('0x004显示子页面索引错误');
@@ -571,7 +572,7 @@
             }
         }
         //添加主题到菜单
-        function addWriterInfoMenu(writerInfo,isNotUpdate,isNotScrollToButtom) {
+        function addWriterInfoMenu(writerInfo, isNotUpdate, isNotScrollToButtom) {
             var topicTitleTemp = $('ol', $('#topicTitleTemp')).html(),
                 $asideMenu = $('#asideMenu');
             $asideMenu.children('.no-topic-title').remove()
@@ -589,7 +590,7 @@
                 .replace(/writerID/g, writerInfo.writerID)
                 .replace(/writerName/g, writerInfo.writerName)
                 .replace(/writerInfo/g, [writerInfo.writerName, writerInfo.writerIsMan, writerInfo.writerArea].join('，'))
-                .replace(/topicTitle/g,writerInfo.topicTitle)
+                .replace(/topicTitle/g, writerInfo.topicTitle)
                 .replace(/listIndex/g, $asideMenu.children().length + 1);
             $asideMenu.append(topicTitleTemp);
             if (!isNotUpdate && isPcScreen) {
@@ -600,14 +601,69 @@
             }
             return true;
         }
-    </script>
-    <script>
-        //ajax部分
-        var errorTips = '<span class="error">*必须填写</span>',
-            dialogDefaultTips = '<span class="info-name">基本信息：</span>writerInfo</br><span class="info-name">主题：</span>topicTitle';
+        //显示对话框
+        function showDialogByID(writerID, mainTitle, writerInfo, topicTitle) {
+            if (!writerID || writerID < 0) {
+                showError('0x003无来信者ID');
+            } else {
+                /*清空dialogPage*/
+                if ($('#topicID').val() !== writerID) {
+                    var topicWriterName = writerInfo.substring(0, writerInfo.indexOf('，'));
+                    $('#dialogHeader').html(dialogDefaultTips.replace(/writerInfo/, writerInfo).replace(/topicTitle/, topicTitle));
+                    $('#dialogList').empty();
+                    ajaxForm($(), $(), 'POST', 'topicID=' + writerID, '', 'ajax/getTopicContent.asp', function (data) {
+                        var topicContents = eval(data.replace(/[\r|\r\n|\n]{1,}/g, '</br>'));
+                        for (var i = 0; i < topicContents.length - 1; i++) {
+                            topicContents[i].topicWriterName = topicWriterName;
+                            addContentIntoDialogList(topicContents[i]);
+                        }
+                    });
+                    $('#topicID').val(writerID);
+                    $('#topicWriterName').val(topicWriterName);
+                }
+                if ($(window).width() >= pcScreenMinWidth) {
+                    var $dialogPage = $('#dialogPage');
+                    //console.log($('#dialogHeader', $dialogPage).outerHeight());
+                    $('#dialogListContainer').css({
+                        'height': $dialogPage.innerHeight() - $('#dialogHeader', $dialogPage).outerHeight() - $('#contentArea', $dialogPage).outerHeight()
+                    });
+                }
+                /*显示dialogPage*/
+                showPageByIndex(2);
+                $(pageElems[2] + 'Title').html(mainTitle + '<span class="info-name">：' + topicTitle + '</span>');
+            }
+        }
+        //添加内容到dialoglist
+        var dialogListScrollTimer;
+        function addContentIntoDialogList(topicContent) {
+            var dialogContainerTemp;
+            if (topicContent.contentIsReply.toLocaleLowerCase() === 'false') {
+                dialogContainerTemp = $.trim($('ol:eq(0)', $('#dialogContainerTemp')).html());
+            } else {
+                dialogContainerTemp = $('ol:eq(1)', $('#dialogContainerTemp')).html();
+                dialogContainerTemp = dialogContainerTemp.replace(/writerName/g, topicContent.topicWriterName);
+            }
+
+            dialogContainerTemp = dialogContainerTemp
+                .replace(/contentTime/g, new Date(topicContent.contentTime).toLocaleString());
+            if (!!topicContent.contentIsImg && topicContent.contentIsImg.toLocaleLowerCase() === 'true') {
+                dialogContainerTemp = dialogContainerTemp
+                    .replace(/topicContent/g, '<p class="text-center"><img class="dialog-container-img" src="' + topicContent.topicContent.replace(/\+/g, ' ') + '"/></p>');
+            } else {
+                dialogContainerTemp = dialogContainerTemp
+                    .replace(/topicContent/g, '<p class="text-indent">' + topicContent.topicContent.replace(/\+/g, ' ')
+                    .replace(/<\/br>/g, '</p><p class="text-indent">') + '</p>');
+            }
+            $('#dialogList').append(dialogContainerTemp);
+            clearTimeout(dialogListScrollTimer);
+            dialogListScrollTimer=setTimeout(function () {
+                $(scrollbarElems[3]).mCustomScrollbar('scrollTo', ['bottom', null]);
+            }, 100);
+        }
+
         $(function () {
             //加载asideMenu
-            ajaxForm($(), $(), 'GET', 'writerID=' + ($.queryString('writerID') || ''), '', 'ajax/getTopicTitle.asp', function (data) {
+            ajaxForm($(), $(), 'POST', 'writerID=' + ($.queryString('writerID') || ''), '', 'ajax/getTopicTitle.asp', function (data) {
                 var writers = eval(data);
                 if (writers.length > 1) {
                     for (var i = 0; i < writers.length - 2; i++) {
@@ -617,12 +673,26 @@
                 }
             });
 
+            //aside-menu click
+            $('.aside-menu').click(function (e) {
+                var $writerElem = $($(e.target || window.event.srcElement).closest('li'));
+                if (!!$writerElem.length) {
+                    showDialogByID($writerElem.attr('data-id'),
+                        '第' + ($writerElem.index() + 1) + '位',
+                        $writerElem.find('dd:first').attr('title'),
+                        $writerElem.find('dd:last').attr('title'));
+                    if (isPcScreen) {
+                        $(contentElems[0]).mCustomScrollbar('scrollTo', $writerElem);
+                    }
+                }
+            });
+
             //点击添加按钮
             $('#addPageBtn').click(function () {
                 var $addPageBtn = $(this),
                     $addPageForm = $('#addPageForm');
                 ajaxForm($addPageBtn, $addPageForm, 'POST', '', errorTips, 'ajax/addTopic.asp', function (data) {
-                    writer = $.parseJSON(data);
+                    writer = eval(data);
                     //显示以writerID为首的对话框
                     if (writer.writerID != -1) {
                         //将整个添加来信者queryString转成json对象添加到asideMenu中
@@ -640,63 +710,126 @@
             $('#contentAreaBtn').click(function () {
                 var checkContentTimeReg = /^\d{4}\/\d{1,2}\/\d{1,2}\s\d{1,2}\:\d{1,2}$/;
                 if (checkContentTimeReg.test($('#contentTime').val())) {
-                    var $contentAreaBtn = $(this),
-                        $contentForm = $('#contentForm');
-                    ajaxForm($contentAreaBtn, $contentForm, 'POST', '', '', 'ajax/addContent.asp', function (data) {
-                        if ($.trim(data) == 1) {
-                            var writerContent = $.queryStringToJson($contentForm.serialize().trim());
-                            for (var p in writerContent) {
-                                console.log(p, writerContent[p]);
-                            }
-
-
-                            $.resetFormData($contentForm);
-                            var dialogContainerTemp;
-                            if (writerContent.contentIsReply === 'false') {
-                                dialogContainerTemp = $.trim($('ol:eq(0)', $('#dialogContainerTemp')).html());
+                    if (!$.trim($('#topicContent').val()).length) {
+                        $('#topicContent').focus();
+                    } else {
+                        var $contentAreaBtn = $(this),
+                            $contentForm = $('#contentForm');
+                        ajaxForm($contentAreaBtn, $contentForm, 'POST', '', '', 'ajax/addContent.asp', function (data) {
+                            if ($.trim(data) == 1) {
+                                var topicContent = $.queryStringToJson($contentForm.serialize().trim());
+                                $.resetFormData($contentForm);
+                                addContentIntoDialogList(topicContent);
                             } else {
-                                dialogContainerTemp = $('ol:eq(1)', $('#dialogContainerTemp')).html();
-                                dialogContainerTemp = dialogContainerTemp.replace(/writerName/g, writerContent.dialogWriterName);
+                                showError(data);
                             }
-                            dialogContainerTemp = dialogContainerTemp
-                                .replace(/contentTime/g, new Date(writerContent.contentTime).toLocaleString())
-                                .replace(/writerContent/g, '<p class="text-indent">' + writerContent.contentAreaContent.replace(/\+/g, ' ')
-                                .replace(/<\/br>/g, '</p><p class="text-indent">') + '</p>');
-                            $('#dialogList').append(dialogContainerTemp);
-                            $(scrollbarElems[3]).mCustomScrollbar('scrollTo', ['bottom', null]);
-                        }
-                    });
+                        });
+                    }
                 } else {
                     $('#contentTime').focus();
                 }
             });
+            $('#contentAreaImgBtn').click(function () {
+                $('#contentAreaImg').trigger('click');
+            });
+            $('#contentAreaImg').change(function () {
+                if (!!$(this).val()) {
+                    var files = $(this)[0].files;
+                    if (typeof files !== "undefined") {
+                        var file = files[0];
+                        if (typeof FileReader !== "undefined" && (/image/i).test(file.type)) {
+                            reader = new FileReader();
+                            reader.onload = (function () {
+                                return function (evt) {
+                                    ajaxIMG(evt.target.result);
+                                };
+                            }());
+                            reader.readAsDataURL(file);
+                        }
+                    }
+                    else {
+                        $(this)[0].select();
+                        ajaxIMG(document.selection.createRange().text);
+                    }
+                }
+            });
         });
         //ajax抽象类
-        function ajaxForm($srcBtn, $srcForm, method, extraData, errorTips, targetUrl, successFunc) {
+        function ajaxForm($srcBtn, $srcForm, method, extraData, errorTips, targetUrl, successFunc,checkFail,isContainImg) {
             $srcBtn.attr('disabled', 'disabled');
 
             if ($.checkFormRequired($srcForm, errorTips)) {
                 //必填的部分已经全部填完
-                $.ajax({
-                    cache: true,
-                    type: method || 'POST',
-                    url: targetUrl,
-                    data: $srcForm.serialize().trim().replace(/\+{1,}/g, '%20') + extraData,
-                }).done(function (data) {
-                    successFunc(data);
-                    $srcBtn.removeAttr('disabled');
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    ajaxFail(jqXHR, textStatus + $srcBtn[0].name, errorThrown);
-                    $srcBtn.removeAttr('disabled');
-                });
+                if (isContainImg===true) {
+                    //包括图片上传
+                    $srcForm.ajaxSubmit({
+                        url: targetUrl,
+                        type: method || 'POST',
+                        success: function(data){
+                            successFunc(data);
+                            $srcBtn.removeAttr('disabled');
+                        },
+                        error: function () {
+                            ajaxFail(jqXHR, textStatus + $srcBtn[0].name, errorThrown);
+                            $srcBtn.removeAttr('disabled');
+                        },
+                    });
+                }
+                else {
+                    //仅文字
+                    $.ajax({
+                        cache: true,
+                        type: method || 'POST',
+                        url: targetUrl,
+                        data: $srcForm.serialize().trim().replace(/\+{1,}/g, '%20').replace(/\'/g, "\\'") + extraData,
+                    }).done(function (data) {
+                        successFunc(data);
+                        $srcBtn.removeAttr('disabled');
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        ajaxFail(jqXHR, textStatus + $srcBtn[0].name, errorThrown);
+                        $srcBtn.removeAttr('disabled');
+                    });
+                }
             } else {
                 $srcBtn.removeAttr('disabled');
+                if ($.isFunction(checkFail)) {
+                    checkFail();
+                }
             }
         }
         //ajaxFail抽象函数
         function ajaxFail(jqXHR, textStatus, errorThrown) {
             showError('0x002添加失败，ajax失败' + textStatus);
         }
+        function ajaxIMG(imgSrc) {
+            var $contentForm = $('#contentForm');
+            ajaxForm($('#contentAreaImgBtn'), $contentForm, 'POST', '', '', 'ajax/uploadFile-bis.asp', function (data) {
+                var topicContent = $.queryStringToJson($contentForm.serialize().trim());
+                $.resetFormData($contentForm);
+
+                var dialogContainerTemp;
+                if (topicContent.contentIsReply.toLocaleLowerCase() === 'false') {
+                    dialogContainerTemp = $.trim($('ol:eq(0)', $('#dialogContainerTemp')).html());
+                } else {
+                    dialogContainerTemp = $('ol:eq(1)', $('#dialogContainerTemp')).html();
+                    dialogContainerTemp = dialogContainerTemp.replace(/writerName/g, topicContent.topicWriterName);
+                }
+
+                dialogContainerTemp = dialogContainerTemp
+                    .replace(/contentTime/g, new Date(topicContent.contentTime).toLocaleString());
+                dialogContainerTemp = dialogContainerTemp
+                    .replace(/topicContent/g, '<p class="text-center"><img class="dialog-container-img" src="' + imgSrc + '"/></p>');
+
+                $('#dialogList').append(dialogContainerTemp);
+                clearTimeout(dialogListScrollTimer);
+                dialogListScrollTimer = setTimeout(function () {
+                    $(scrollbarElems[3]).mCustomScrollbar('scrollTo', ['bottom', null]);
+                }, 100);
+            }, function () {
+                $('#contentAreaImg').val('');
+            },true);
+        }
     </script>
+    <script src="common/jquery-form.js"></script>
 </body>
 </html>

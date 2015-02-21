@@ -10381,7 +10381,7 @@ jQuery.extend({
         targetCSS = 'background-color';
         $elem.css(targetCSS, hsl);
         var css = $elem.css(targetCSS).toString();
-        if (jQuery.support.opacity && $(window).width() >= pcScreenMinWidth) {
+        if (jQuery.support.opacity && isPcScreen) {
             return css.replace('rgb', 'rgba').replace(')', ',' + opacity + ')');
         }
         return css;

@@ -16,9 +16,9 @@
         
         on error resume next
         if err<>0 then
-            response.Write("{""writerID"":""-1""}")
+            response.Write("({'writerID':-1})")
         else
-            response.Write("{""writerID"":""" & rs("writerID") & """}")
+            response.Write("({'writerID':" & rs("writerID") & "})")
         end if
         'sql="INSERT INTO topic(writerName,writerIsMan,writerArea,topicTitle) VALUES('"
         'sql=sql & replace(request("writerName"),"'","''") & "','"
